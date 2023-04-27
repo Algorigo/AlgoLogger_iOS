@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Zgf-Vh-PJp">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="Rh5-RU-hHL">
+            <objects>
+                <navigationController id="Zgf-Vh-PJp" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mB7-G6-8Or">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="jWg-N6-MuN" kind="relationship" relationship="rootViewController" id="UCh-Yk-VQq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lXc-on-DUN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-527" y="-370"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="8H1-WO-E7E">
+            <objects>
+                <viewController id="jWg-N6-MuN" customClass="ViewController" customModule="AlgoLoggerApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XGO-2f-F7U">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C1C-xX-OzR">
+                                <rect key="frame" x="16" y="119" width="361" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Log"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="qq4-Tb-Y7O"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="uBd-bR-6l7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="uBd-bR-6l7" firstAttribute="trailing" secondItem="C1C-xX-OzR" secondAttribute="trailing" constant="16" id="V5P-nj-pUM"/>
+                            <constraint firstItem="C1C-xX-OzR" firstAttribute="top" secondItem="uBd-bR-6l7" secondAttribute="top" constant="16" id="nmU-vT-71Q"/>
+                            <constraint firstItem="C1C-xX-OzR" firstAttribute="leading" secondItem="uBd-bR-6l7" secondAttribute="leading" constant="16" id="xMD-lc-7ns"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="DkJ-Ci-ak9"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m8I-A3-git" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="378" y="-370"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="AlgoLoggerApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="PE5-Lq-Xuv">
+                                <rect key="frame" x="16" y="103" width="361" height="715"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="log_cell" id="aNe-oo-Lqn" customClass="LogTableViewCell" customModule="AlgoLoggerApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="361" height="39.333332061767578"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aNe-oo-Lqn" id="7li-pK-XVd">
+                                            <rect key="frame" x="0.0" y="0.0" width="361" height="39.333332061767578"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fLV-D5-LMG">
+                                                    <rect key="frame" x="20" y="10.999999999999998" width="321" height="17.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="fLV-D5-LMG" firstAttribute="top" secondItem="7li-pK-XVd" secondAttribute="topMargin" id="48V-iT-e03"/>
+                                                <constraint firstItem="fLV-D5-LMG" firstAttribute="leading" secondItem="7li-pK-XVd" secondAttribute="leadingMargin" id="ipl-Tt-kPh"/>
+                                                <constraint firstItem="fLV-D5-LMG" firstAttribute="trailing" secondItem="7li-pK-XVd" secondAttribute="trailingMargin" id="jT3-j4-74g"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="fLV-D5-LMG" secondAttribute="bottom" id="jby-VH-ijM"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="logFileLabel" destination="fLV-D5-LMG" id="7I2-dI-z83"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="CD6-Ou-lME"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="4fz-H6-qQs"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="PE5-Lq-Xuv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="XPO-gx-Ox6"/>
+                            <constraint firstItem="PE5-Lq-Xuv" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="jCu-9r-9Oq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="PE5-Lq-Xuv" secondAttribute="trailing" constant="16" id="klq-Gq-cUA"/>
+                            <constraint firstItem="PE5-Lq-Xuv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="ukX-sh-zgS"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Dzb-Ti-8FB"/>
+                    <connections>
+                        <outlet property="logTableView" destination="PE5-Lq-Xuv" id="eFl-OH-O3x"/>
+                        <segue destination="TmB-m4-sc1" kind="show" identifier="log_text_segue" destinationCreationSelector="logSegue:" id="w8x-Ba-5oa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="378" y="325"/>
+        </scene>
+        <!--Log View Controller-->
+        <scene sceneID="Tac-xK-law">
+            <objects>
+                <viewController id="TmB-m4-sc1" customClass="LogViewController" customModule="AlgoLoggerApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4vO-5Z-GeJ">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Swo-BV-Ztg">
+                                <rect key="frame" x="0.0" y="103" width="393" height="749"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="efS-5z-YYR">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="749"/>
+                                        <subviews>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="tFc-j1-BjC">
+                                                <rect key="frame" x="8" y="8" width="377" height="733"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                <color key="textColor" systemColor="labelColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="tFc-j1-BjC" secondAttribute="bottom" constant="8" id="eM3-Dj-2bQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="tFc-j1-BjC" secondAttribute="trailing" constant="8" id="lqU-bo-wi3"/>
+                                            <constraint firstItem="tFc-j1-BjC" firstAttribute="top" secondItem="efS-5z-YYR" secondAttribute="top" constant="8" id="rLj-GP-6AH"/>
+                                            <constraint firstItem="tFc-j1-BjC" firstAttribute="leading" secondItem="efS-5z-YYR" secondAttribute="leading" constant="8" id="vkF-Xd-iLK"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="efS-5z-YYR" firstAttribute="width" secondItem="Swo-BV-Ztg" secondAttribute="width" id="2u9-0C-jWr"/>
+                                    <constraint firstItem="efS-5z-YYR" firstAttribute="top" secondItem="NU0-n2-yfF" secondAttribute="top" id="JbY-KY-RYQ"/>
+                                    <constraint firstItem="efS-5z-YYR" firstAttribute="bottom" secondItem="NU0-n2-yfF" secondAttribute="bottom" constant="749" id="NfR-vB-uod"/>
+                                    <constraint firstItem="efS-5z-YYR" firstAttribute="height" relation="lessThanOrEqual" secondItem="Swo-BV-Ztg" secondAttribute="height" id="TPq-XS-8pr"/>
+                                    <constraint firstItem="efS-5z-YYR" firstAttribute="trailing" secondItem="NU0-n2-yfF" secondAttribute="trailing" constant="393" id="gLn-gx-l6T"/>
+                                    <constraint firstItem="efS-5z-YYR" firstAttribute="leading" secondItem="NU0-n2-yfF" secondAttribute="leading" id="j2W-AC-DZg"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="NU0-n2-yfF"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="ALx-1o-ihZ"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Fwo-CV-QK2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Swo-BV-Ztg" secondAttribute="bottom" id="IFS-1z-lww"/>
+                            <constraint firstItem="Swo-BV-Ztg" firstAttribute="trailing" secondItem="Fwo-CV-QK2" secondAttribute="trailing" id="Wee-ON-S02"/>
+                            <constraint firstItem="Swo-BV-Ztg" firstAttribute="leading" secondItem="Fwo-CV-QK2" secondAttribute="leading" id="YZt-Ro-7Ya"/>
+                            <constraint firstItem="Swo-BV-Ztg" firstAttribute="top" secondItem="Fwo-CV-QK2" secondAttribute="top" id="whM-tc-9zG"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Zsv-dI-eBj"/>
+                    <connections>
+                        <outlet property="logTextView" destination="tFc-j1-BjC" id="fk4-eH-Z2P"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qsh-9L-n4N" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1267.9389312977098" y="324.64788732394368"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
