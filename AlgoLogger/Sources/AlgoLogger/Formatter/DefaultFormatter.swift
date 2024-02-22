@@ -22,8 +22,11 @@ class DefaultFormatter: LogFormatterProtocol, CustomDebugStringConvertible {
         }
     }
     
-    init() {
+    init(useUTC: Bool = true) {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        if useUTC {
+            formatter.timeZone = TimeZone(abbreviation: "UTC")
+        }
     }
     
     func format(logDetails: inout LogDetails, message: inout String) -> String {

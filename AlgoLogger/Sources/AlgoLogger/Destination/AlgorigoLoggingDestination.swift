@@ -40,9 +40,9 @@ public class AlgorigoLoggingDestination : BaseDestination {
     public init(formatter: LogFormatterProtocol? = nil, outputLevel: XCGLogger.Level = .info) {
         super.init(owner: nil, identifier: String(describing: OsLoggingDestination.self))
         if let formatter = formatter {
-            self.formatters = [formatter, DefaultFormatter()]
+            self.formatters = [formatter, DefaultFormatter(useUTC: false)]
         } else {
-            self.formatters = [DefaultFormatter()]
+            self.formatters = [DefaultFormatter(useUTC: false)]
         }
         self.outputLevel = outputLevel
     }
