@@ -32,6 +32,12 @@ class ViewController: UIViewController {
         L.warning(TestTag.TestTag2.TestTag3, "TestTag.TestTag2.TestTag3")
         L.warning(TestTag.TestTag4, "TestTag.TestTag4")
 //        logTableView.reloadData()
+        
+        do {
+            throw NSError(domain: "test", code: 0, userInfo: nil)
+        } catch {
+            L.error(TestTag, "error", error: error, callStackSymbols: Thread.callStackSymbols)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

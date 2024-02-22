@@ -28,11 +28,15 @@ class DefaultFormatter: LogFormatterProtocol, CustomDebugStringConvertible {
     
     func format(logDetails: inout LogDetails, message: inout String) -> String {
         message = "\(formatter.string(for: logDetails.date) ?? String(describing: logDetails.date)) "
-        + "[\(logDetails.level.description):\(logDetails.userInfo["tag"] ?? "")] "
+        + "[\(logDetails.level.description):\(logDetails.userInfo[L.tag] ?? "")] "
         + "\(logDetails.message) "
         + "(\(URL(string: logDetails.fileName)!.lastPathComponent):\(logDetails.lineNumber))"
-        if let error = logDetails.userInfo["error"] as? Error {
-            message += "\n### \(error.localizedDescription)\n"
+        if let error = logDetails.userInfo[L.error] as? Error {
+            message += "\n### \(error.localizedDescription)"
+        }
+        if let stackTrace = logDetails.userInfo[L.stackTrace] as? String,
+           !stackTrace.isEmpty {
+            message += "\n### Stack Trace: \(stackTrace)"
         }
         return message
     }
