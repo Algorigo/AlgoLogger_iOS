@@ -22,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let consoleDestination = ConsoleDestination()
 //        consoleDestination.outputLevel = .verbose
 //        _ = consoleDestination.addTo(tag: TestTag)
+        if let rotatingFileDestination = try? RotatingFileDestination(relativePath: "log/native.log", identifier: "RotatingFileDestination", shouldAppend: true, maxFileSize: 100) {
+            _ = rotatingFileDestination.addTo(tag: TestTag)
+        }
         return true
     }
 

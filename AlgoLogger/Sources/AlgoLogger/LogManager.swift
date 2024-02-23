@@ -10,19 +10,6 @@ import XCGLogger
 
 public class LogManager {
     
-    fileprivate static let logDirectory = "log"
-    fileprivate static let logRelativePath = "\(logDirectory)/native.log"
-    
-    fileprivate static func getLogFileUrl() -> URL {
-        return getPathUrl(relativePath: logRelativePath)
-    }
-    
-    fileprivate static func getPathUrl(relativePath: String) -> URL {
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = urls[urls.endIndex - 1]
-        return documentsDirectory.appendingPathComponent(relativePath)
-    }
-    
     fileprivate static let instance = LogManager()
     
     public static var singleton: LogManager {
