@@ -33,7 +33,7 @@ class DefaultFormatter: LogFormatterProtocol, CustomDebugStringConvertible {
         message = "\(formatter.string(for: logDetails.date) ?? String(describing: logDetails.date)) "
         + "[\(logDetails.level.description):\(logDetails.userInfo[L.tag] ?? "")] "
         + "\(logDetails.message) "
-        + "(\(URL(string: logDetails.fileName)?.lastPathComponent ?? logDetails.fileName):\(logDetails.lineNumber))"
+        + (logDetails.fileName.isEmpty ? "" : "(\(URL(string: logDetails.fileName)!.lastPathComponent ):\(logDetails.lineNumber))")
         if let error = logDetails.userInfo[L.error] as? Error {
             message += "\n### \(error.localizedDescription)"
         }
