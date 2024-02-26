@@ -18,43 +18,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="jWg-N6-MuN" kind="relationship" relationship="rootViewController" id="UCh-Yk-VQq"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="PLp-WP-R4e"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lXc-on-DUN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-527" y="-370"/>
-        </scene>
-        <!--Main View Controller-->
-        <scene sceneID="8H1-WO-E7E">
-            <objects>
-                <viewController id="jWg-N6-MuN" customClass="MainViewController" customModule="AlgoLoggerApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="XGO-2f-F7U">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C1C-xX-OzR">
-                                <rect key="frame" x="16" y="119" width="361" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Rotating File Log"/>
-                                <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="qq4-Tb-Y7O"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="uBd-bR-6l7"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="uBd-bR-6l7" firstAttribute="trailing" secondItem="C1C-xX-OzR" secondAttribute="trailing" constant="16" id="V5P-nj-pUM"/>
-                            <constraint firstItem="C1C-xX-OzR" firstAttribute="top" secondItem="uBd-bR-6l7" secondAttribute="top" constant="16" id="nmU-vT-71Q"/>
-                            <constraint firstItem="C1C-xX-OzR" firstAttribute="leading" secondItem="uBd-bR-6l7" secondAttribute="leading" constant="16" id="xMD-lc-7ns"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="DkJ-Ci-ak9"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="m8I-A3-git" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="377.86259541984731" y="-370.42253521126764"/>
+            <point key="canvasLocation" x="-494" y="325"/>
         </scene>
         <!--Rotating File View Controller-->
         <scene sceneID="tne-QT-ifu">
