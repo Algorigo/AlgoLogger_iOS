@@ -43,8 +43,8 @@ class RotatingFileViewController: UIViewController {
     
     fileprivate static let pathFormatter = PathFormatter()
     fileprivate static let keyFormatter = KeyFormatter()
-    fileprivate static let accessKey = ""
-    fileprivate static let secretKey = ""
+    fileprivate static let accessKey = "AKIA3SVVW4YVFE6MKBFX"
+    fileprivate static let secretKey = "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"
     fileprivate static let region = AWSRegionType.APNortheast2
     
     @IBOutlet weak var logTableView: UITableView!
