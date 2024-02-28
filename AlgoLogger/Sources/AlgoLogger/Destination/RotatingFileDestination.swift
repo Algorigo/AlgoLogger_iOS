@@ -153,10 +153,10 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
     
     fileprivate var uploadDisposable: Disposable? = nil
     
-    public init(writeToFile: Any, owner: XCGLogger? = nil, identifier: String = "", outputLevel: XCGLogger.Level = .debug, shouldAppend: Bool = true, maxFileSize: UInt64 = 10 * 1024 * 1024, targetMaxLogFiles: UInt8 = 5, rotateCheckInterval: TimeInterval = 300, maxTimeInterval: TimeInterval = 0, appendMarker: String? = "-- ** ** ** --", attributes: [FileAttributeKey : Any]? = nil) {
+    public init(writeToFile: Any, owner: XCGLogger? = nil, outputLevel: XCGLogger.Level = .debug, shouldAppend: Bool = true, maxFileSize: UInt64 = 10 * 1024 * 1024, targetMaxLogFiles: UInt8 = 5, rotateCheckInterval: TimeInterval = 300, maxTimeInterval: TimeInterval = 0, appendMarker: String? = "-- ** ** ** --", attributes: [FileAttributeKey : Any]? = nil) {
         self.rotatedTimeInterval = 0
         self.rotateThresholdInterval = rotateCheckInterval
-        super.init(owner: owner, writeToFile: writeToFile, identifier: identifier, shouldAppend: shouldAppend, appendMarker: appendMarker, maxFileSize: maxFileSize, maxTimeInterval: maxTimeInterval, archiveSuffixDateFormatter: RotatingFileDestination.formatter, targetMaxLogFiles: targetMaxLogFiles)
+        super.init(owner: owner ?? LogManager.defaultLogger, writeToFile: writeToFile, identifier: String(describing: RotatingFileDestination.self), shouldAppend: shouldAppend, appendMarker: appendMarker, maxFileSize: maxFileSize, maxTimeInterval: maxTimeInterval, archiveSuffixDateFormatter: RotatingFileDestination.formatter, targetMaxLogFiles: targetMaxLogFiles)
         self.outputLevel = outputLevel
     }
     
@@ -164,7 +164,7 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
         let path = try RotatingFileDestination.getPathUrl(relativePath: relativePath)
         self.rotatedTimeInterval = 0
         self.rotateThresholdInterval = rotateCheckInterval
-        super.init(owner: owner, writeToFile: path, identifier: identifier, shouldAppend: shouldAppend, appendMarker: appendMarker, maxFileSize: maxFileSize, maxTimeInterval: maxTimeInterval, archiveSuffixDateFormatter: RotatingFileDestination.formatter, targetMaxLogFiles: targetMaxLogFiles)
+        super.init(owner: owner ?? LogManager.defaultLogger, writeToFile: path, identifier: identifier, shouldAppend: shouldAppend, appendMarker: appendMarker, maxFileSize: maxFileSize, maxTimeInterval: maxTimeInterval, archiveSuffixDateFormatter: RotatingFileDestination.formatter, targetMaxLogFiles: targetMaxLogFiles)
         self.outputLevel = outputLevel
     }
     
@@ -248,7 +248,7 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
             })
             .ignoreElements()
             .subscribe(onError: { [weak self] error in
-                self?.owner?.logln("registerS3Uploader error : \(error)", level: .info)
+                self?.owner?.info("registerS3Uploader error", userInfo: [L.error: error])
             })
     }
     
@@ -261,6 +261,11 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
 extension AWSS3 {
     func putObjectCompletable(logFile: RotatingFileDestination.LogFile, bucketName: String, keyDelegate: @escaping (RotatingFileDestination.LogFile) -> String) -> Completable {
         return Completable.create { [weak self] observer in
+            guard let self = self else {
+                observer(.error(RotatingFileDestinationError.destinationReleased))
+                return Disposables.create()
+            }
+            
             if FileManager.default.fileExists(atPath: logFile.path),
                let data = try? Data(contentsOf: URL(fileURLWithPath: logFile.path)) {
                 if let request = AWSS3PutObjectRequest() {
@@ -269,14 +274,12 @@ extension AWSS3 {
                     request.body = data
                     request.contentLength = NSNumber(value: UInt64(data.count))
                     request.contentType = "text/plain"
-                    let outputTask = self!.putObject(request)
-                    outputTask.continueWith { output in
-                        if let error = output.error {
+                    self.putObject(request) { output, error in
+                        if let error = error {
                             observer(.error(error))
                         } else {
                             observer(.completed)
                         }
-                        return nil
                     }
                 } else {
                     observer(.error(RotatingFileDestinationError.awsNotConfigured))

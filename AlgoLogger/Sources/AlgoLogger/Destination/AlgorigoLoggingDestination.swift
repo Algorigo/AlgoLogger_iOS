@@ -37,8 +37,8 @@ public class AlgorigoLoggingDestination : BaseDestination {
     
     fileprivate var logQueue: DispatchQueue? = nil
     
-    public init(formatter: LogFormatterProtocol? = nil, outputLevel: XCGLogger.Level = .info) {
-        super.init(owner: nil, identifier: String(describing: OsLoggingDestination.self))
+    public init(owner: XCGLogger? = nil, formatter: LogFormatterProtocol? = nil, outputLevel: XCGLogger.Level = .info, identifier: String = "") {
+        super.init(owner: owner ?? LogManager.defaultLogger, identifier: identifier)
         if let formatter = formatter {
             self.formatters = [formatter, DefaultFormatter(useUTC: false)]
         } else {
@@ -57,7 +57,7 @@ public class AlgorigoLoggingDestination : BaseDestination {
             guard !self.shouldExclude(logDetails: &logDetails, message: &message) else { return }
             
             self.applyFormatters(logDetails: &logDetails, message: &message)
-            self.write(level: logDetails.level, message: message)
+            self.write(level: logDetails.level, message: message, date: logDetails.date)
         }
         
         if let logQueue = logQueue {
@@ -68,7 +68,7 @@ public class AlgorigoLoggingDestination : BaseDestination {
         }
     }
     
-    open func write(level: XCGLogger.Level, message: String) {
+    open func write(level: XCGLogger.Level, message: String, date: Date) {
         fatalError("write(level:message:) must be overridden in the subclass")
     }
 }

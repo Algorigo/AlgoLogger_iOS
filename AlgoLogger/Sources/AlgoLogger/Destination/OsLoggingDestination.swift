@@ -11,11 +11,11 @@ import OSLog
 
 public class OsLoggingDestination : AlgorigoLoggingDestination {
     
-    public override init(formatter: LogFormatterProtocol? = nil, outputLevel: XCGLogger.Level = .debug) {
-        super.init(formatter: formatter, outputLevel: outputLevel)
+    public init(owner: XCGLogger? = nil, formatter: LogFormatterProtocol? = nil, outputLevel: XCGLogger.Level = .debug) {
+        super.init(owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: String(describing: OsLoggingDestination.self))
     }
     
-    public override func write(level: XCGLogger.Level, message: String) {
+    public override func write(level: XCGLogger.Level, message: String, date: Date) {
         switch level {
         case .verbose:
             os_log("%@", type: .debug, message)

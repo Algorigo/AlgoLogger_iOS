@@ -138,5 +138,8 @@ Pod::Spec.new do |spec|
   s.dependency 'RxSwift', '~> 6.6.0'
   s.dependency 'RxCocoa', '~> 6.6.0'
   s.dependency 'RxRelay', '~> 6.6.0'
+  s.dependency 'AWSS3', '~> 2.33.10'
+  s.dependency 'AWSLogs', '~> 2.33.10'
+  s.dependency 'SQLite.swift', '~> 0.15.0'
 
 end

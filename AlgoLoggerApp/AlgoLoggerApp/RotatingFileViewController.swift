@@ -13,39 +13,18 @@ import AWSS3
 
 class RotatingFileViewController: UIViewController {
     
-    fileprivate class PathFormatter: DateFormatter {
-        override init() {
-            super.init()
-            dateFormat = "yyyy/MM/dd"
-            timeZone = TimeZone(abbreviation: "UTC")
-        }
-        
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-            dateFormat = "yyyy/MM/dd"
-            timeZone = TimeZone(abbreviation: "UTC")
-        }
-    }
-    
-    fileprivate class KeyFormatter: DateFormatter {
-        override init() {
-            super.init()
-            dateFormat = "yyyy-MM-dd-HH-mm-ss"
-            timeZone = TimeZone(abbreviation: "UTC")
-        }
-        
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-            dateFormat = "yyyy-MM-dd-HH-mm-ss"
-            timeZone = TimeZone(abbreviation: "UTC")
-        }
-    }
-    
-    fileprivate static let pathFormatter = PathFormatter()
-    fileprivate static let keyFormatter = KeyFormatter()
-    fileprivate static let accessKey = "AKIA3SVVW4YVFE6MKBFX"
-    fileprivate static let secretKey = "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"
-    fileprivate static let region = AWSRegionType.APNortheast2
+    fileprivate static let pathFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        return formatter
+    }()
+    fileprivate static let keyFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd-HH-mm-ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        return formatter
+    }()
     
     @IBOutlet weak var logTableView: UITableView!
     
@@ -124,7 +103,7 @@ class RotatingFileViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
             
-            rotatingFileDestination.registerS3Uploader(accessKey: RotatingFileViewController.accessKey, secretKey: RotatingFileViewController.secretKey, region: RotatingFileViewController.region, bucketName: "woon") { logFile in
+            rotatingFileDestination.registerS3Uploader(accessKey: AppDelegate.accessKey, secretKey: AppDelegate.secretKey, region: AppDelegate.region, bucketName: "woon") { logFile in
                 "log_file/\(RotatingFileViewController.pathFormatter.string(from: logFile.rotatedDate))/algorigo_logger_ios-log-\(RotatingFileViewController.keyFormatter.string(from: logFile.rotatedDate)).log"
             }
         }
