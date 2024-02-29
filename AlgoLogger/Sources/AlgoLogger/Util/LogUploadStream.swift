@@ -54,7 +54,7 @@ class LogUploadStream {
     
     enum DatabaseResult {
         case inserted(count: Int, size: Int, createdAt: Date)
-        case deleted(sendIndex: Int)
+        case deleted(sendIndex: Int, restCount: Int, restSize: Int)
     }
     
     fileprivate let sendInterval: TimeInterval
@@ -101,8 +101,11 @@ class LogUploadStream {
                                         .asObservable()
                                 case .logDeleteEvent(let sendIndex):
                                     return database.delete(sendIndex: Int64(sendIndex))
-                                        .map { _ in
-                                            DatabaseResult.deleted(sendIndex: sendIndex)
+                                        .flatMap({ _ in
+                                            database.countAndSize()
+                                        })
+                                        .map { count, size in
+                                            DatabaseResult.deleted(sendIndex: sendIndex, restCount: count, restSize: Int(size))
                                         }
                                         .asObservable()
                                 }
@@ -129,11 +132,11 @@ class LogUploadStream {
                                     } else {
                                         return MidResult(logBatches: logBatches, result: nil)
                                     }
-                                case .deleted(let sendIndex):
+                                case .deleted(let sendIndex, let restCount, let restSize):
                                     if let index = logBatches.firstIndex(where: { $0.sendIndex == sendIndex }) {
                                         logBatches.remove(at: index)
                                     } else {
-                                        logBatches = [(count: 0, size: 0, from: Date.zero, to: Date.zero, sendIndex: 0)]
+                                        logBatches = [(count: restCount, size: restSize, from: Date.zero, to: Date.zero, sendIndex: 0)]
                                     }
                                     return MidResult(logBatches: logBatches, result: nil)
                                 }
