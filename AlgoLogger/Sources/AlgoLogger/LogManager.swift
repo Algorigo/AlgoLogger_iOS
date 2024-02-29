@@ -10,20 +10,9 @@ import XCGLogger
 
 public class LogManager {
     
-    fileprivate static let logDirectory = "log"
-    fileprivate static let logRelativePath = "\(logDirectory)/native.log"
-    
-    fileprivate static func getLogFileUrl() -> URL {
-        return getPathUrl(relativePath: logRelativePath)
-    }
-    
-    fileprivate static func getPathUrl(relativePath: String) -> URL {
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = urls[urls.endIndex - 1]
-        return documentsDirectory.appendingPathComponent(relativePath)
-    }
-    
     fileprivate static let instance = LogManager()
+    
+    static let defaultLogger = XCGLogger(identifier: "AlgoLogger", includeDefaultDestinations: true)
     
     public static var singleton: LogManager {
         return instance
@@ -46,34 +35,6 @@ public class LogManager {
         loggerDict[tag] = logger
         return logger
     }
-    
-//    public func setupFileLogger(level: XCGLogger.Level = .info) {
-//        let logDirectoryUrl = LogManager.getPathUrl(relativePath: LogManager.logDirectory)
-//        if !FileManager.default.fileExists(atPath: logDirectoryUrl.path) {
-//            do {
-//                try FileManager.default.createDirectory(atPath: logDirectoryUrl.path, withIntermediateDirectories: true)
-//            } catch {
-//                print("error:\(error)")
-//            }
-//        }
-//        let logFileUrl = LogManager.getLogFileUrl()
-//        print("logFileUrl:\(logFileUrl)")
-//        let autoRotatingFileDestination = AutoRotatingFileDestination(writeToFile: logFileUrl, targetMaxLogFiles: 3)
-//        autoRotatingFileDestination.outputLevel = level
-//        logger.add(destination: autoRotatingFileDestination)
-//    }
-//    
-//    public func getLoggerFiles() -> [String] {
-//        let logDirectoryUrl = LogManager.getPathUrl(relativePath: LogManager.logDirectory)
-//        print("logPath:\(logDirectoryUrl)")
-//        do {
-//            return (try FileManager.default.contentsOfDirectory(atPath: logDirectoryUrl.path))
-//                .map { logDirectoryUrl.appendingPathComponent($0).path }
-//        } catch {
-//            print("error:\(error)")
-//            return []
-//        }
-//    }
 }
 
 extension DestinationProtocol {

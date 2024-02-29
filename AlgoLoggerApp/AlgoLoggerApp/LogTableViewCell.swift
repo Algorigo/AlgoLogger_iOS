@@ -22,8 +22,8 @@ class LogTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func setLogFile(file: String) {
-        logFileLabel.text = file
+    func setLogFile(file: URL) {
+        logFileLabel.text = file.lastPathComponent
     }
     
 }

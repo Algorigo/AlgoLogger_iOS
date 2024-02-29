@@ -8,10 +8,15 @@
 import UIKit
 import XCGLogger
 import AlgoLogger
+import AWSS3
+import RxSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
+    static let accessKey = ""
+    static let secretKey = ""
+    static let region = AWSRegionType.APNortheast2
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -19,9 +24,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         LogManager.singleton.initTags(TestTag, TestTag.TestTag2, TestTag.TestTag2.TestTag3, TestTag.TestTag4)
         let osLoggingDestination = OsLoggingDestination(outputLevel: .verbose)
         _ = osLoggingDestination.addTo(tag: TestTag)
+        
 //        let consoleDestination = ConsoleDestination()
 //        consoleDestination.outputLevel = .verbose
 //        _ = consoleDestination.addTo(tag: TestTag)
+        
+        if let rotatingFileDestination = try? RotatingFileDestination(relativePath: "log/native.log", identifier: "RotatingFileDestination", shouldAppend: true, maxFileSize: 100) {
+            _ = rotatingFileDestination.addTo(tag: TestTag)
+        }
+        
+        let cloudWatchDestination = CloudWatchDestination(
+            logGroupNameSingle: Single<String>.just("/test/algorigo_logger_ios_native"),
+            logStreamNameSingle: Single<String>.just("device_id"),
+            accessKey: AppDelegate.accessKey,
+            secretKey: AppDelegate.secretKey,
+            region: AppDelegate.region,
+            outputLevel: .info,
+            logGroupRetentionDays: .day_1
+        )
+        _ = cloudWatchDestination.addTo(tag: TestTag)
         return true
     }
 

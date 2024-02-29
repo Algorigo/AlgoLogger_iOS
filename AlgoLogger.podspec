@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "AlgoLogger"
-  spec.version      = "0.0.1"
+  spec.version      = "0.1.0"
   spec.summary      = "Logger Library of Algorigo"
 
   # This description is used to generate tags and improve search results.
@@ -25,6 +25,7 @@ Pod::Spec.new do |spec|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
+    AlgoLogger is a logger library of Algorigo. It is a simple and easy-to-use logger library that can be used in iOS projects.
                    DESC
 
   spec.homepage     = "https://github.com/Algorigo/AlgoLogger_iOS"
@@ -67,7 +68,7 @@ Pod::Spec.new do |spec|
   # spec.platform     = :ios, "5.0"
 
   #  When using multiple platforms
-  spec.ios.deployment_target = "8.0"
+  spec.ios.deployment_target = "12.0"
   # spec.osx.deployment_target = "10.10"
   # spec.watchos.deployment_target = "2.0"
   # spec.tvos.deployment_target = "9.0"
@@ -79,7 +80,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "http://EXAMPLE/AlgoLogger.git", :tag => "#{spec.version}" }
+  spec.source       = { :git => "https://github.com/Algorigo/AlgoLogger_iOS", :tag => "#{spec.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -122,7 +123,7 @@ Pod::Spec.new do |spec|
   # spec.library   = "iconv"
   # spec.libraries = "iconv", "xml2"
 
-  s.vendored_frameworks = "OSLog.framework"
+  # spec.vendored_frameworks = "OSLog.framework"
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -134,6 +135,12 @@ Pod::Spec.new do |spec|
 
   # spec.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # spec.dependency "JSONKit", "~> 1.4"
-  s.dependency 'XCGLogger', '~> 7.0.1'
+  spec.dependency 'XCGLogger', '~> 7.0.1'
+  spec.dependency 'RxSwift', '~> 6.5.0'
+  spec.dependency 'RxCocoa', '~> 6.5.0'
+  spec.dependency 'RxRelay', '~> 6.5.0'
+  spec.dependency 'AWSS3', '~> 2.33.10'
+  spec.dependency 'AWSLogs', '~> 2.33.10'
+  spec.dependency 'SQLite.swift', '~> 0.14.0'
 
 end
