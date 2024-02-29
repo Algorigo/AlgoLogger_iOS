@@ -56,7 +56,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         if useQueue {
             self.logUploadStream = LogUploadStream(
                 retentionDays: logGroupRetentionDays,
-                sendInterval: sendInterval,
+                sendInterval: sendInterval < 10 ? 10 : sendInterval,
                 maxBatchSize: maxQueueSize,
                 maxBatchCount: maxBatchCount,
                 logger: self.owner
