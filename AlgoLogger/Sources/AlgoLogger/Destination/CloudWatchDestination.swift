@@ -101,6 +101,27 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
             .disposed(by: self.disposeBag)
     }
     
+    convenience init(
+        logGroupName: String,
+        logStreamName: String,
+        accessKey: String,
+        secretKey: String,
+        region: AWSRegionType,
+        owner: XCGLogger? = nil,
+        formatter: LogFormatterProtocol? = nil,
+        outputLevel: XCGLogger.Level = .info,
+        useQueue: Bool = true,
+        sendInterval: TimeInterval = 60, // 1 minutes
+        maxQueueSize: Int = 1048576, // 1 MBytes
+        maxBatchCount: Int = 10000,
+        maxMessageSize: Int = 262114, // 256 KBytes
+        logGroupRetentionDays: RetentionDays = RetentionDays.month_6,
+        createLogGroup: Bool = true,
+        createLogStream: Bool = true
+    ) {
+        self.init(logGroupNameSingle: Single.just(logGroupName), logStreamNameSingle: Single.just(logStreamName), accessKey: accessKey, secretKey: secretKey, region: region, owner: owner, formatter: formatter, outputLevel: outputLevel, useQueue: useQueue, sendInterval: sendInterval, maxQueueSize: maxQueueSize, maxBatchCount: maxBatchCount, maxMessageSize: maxMessageSize, logGroupRetentionDays: logGroupRetentionDays, createLogGroup: createLogGroup, createLogStream: createLogStream)
+    }
+    
     private func initCloudWatch(
         logGroupName: String,
         logStreamName: String,
