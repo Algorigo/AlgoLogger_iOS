@@ -29,6 +29,7 @@ let package = Package(
                 "RxSwift",
                 .product(name: "RxCocoa", package: "RxSwift"),
                 .product(name: "RxRelay", package: "RxSwift"),
+                .product(name: "AWSCore", package: "aws-sdk-ios-spm"),
                 .product(name: "AWSS3", package: "aws-sdk-ios-spm"),
                 .product(name: "AWSLogs", package: "aws-sdk-ios-spm"),
                 .product(name: "SQLite", package: "SQLite.swift"),
