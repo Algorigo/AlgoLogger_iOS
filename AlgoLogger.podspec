@@ -16,8 +16,9 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "AlgoLogger"
-  spec.version      = "0.1.0"
+  spec.version      = "0.1.1"
   spec.summary      = "Logger Library of Algorigo"
+  spec.swift_version = '5.7'
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -91,8 +92,8 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "AlgoLogger/Sources/AlgoLogger", "AlgoLogger/Sources/AlgoLogger/**/*.{h,m}"
-  # spec.exclude_files = "Classes/Exclude"
+  spec.source_files  = "AlgoLogger/Sources/AlgoLogger/**/*.swift"
+  spec.exclude_files = "AlgoLogger/Tests/**/*"
 
   # spec.public_header_files = "Classes/**/*.h"
 
@@ -139,6 +140,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'RxSwift', '~> 6.5.0'
   spec.dependency 'RxCocoa', '~> 6.5.0'
   spec.dependency 'RxRelay', '~> 6.5.0'
+  spec.dependency 'AWSCore', '~> 2.33.10'
   spec.dependency 'AWSS3', '~> 2.33.10'
   spec.dependency 'AWSLogs', '~> 2.33.10'
   spec.dependency 'SQLite.swift', '~> 0.14.0'

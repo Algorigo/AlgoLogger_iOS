@@ -172,7 +172,7 @@ class LogUploadStream {
                 guard let self = self else {
                     return Observable<(Int, [LogDatabase.LogData])>.error(LogUploadStreamError.logUploadStreamReleased)
                 }
-                return outputRelay.asObservable()
+                return self.outputRelay.asObservable()
                     .timeout(timeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .background))
                     .catch { error in
                         Single.just(Int.random(in: 1..<Int.max))
