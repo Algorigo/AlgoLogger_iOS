@@ -153,14 +153,14 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
     
     fileprivate var uploadDisposable: Disposable? = nil
     
-    public init(writeToFile: Any, owner: XCGLogger? = nil, outputLevel: XCGLogger.Level = .debug, shouldAppend: Bool = true, maxFileSize: UInt64 = 10 * 1024 * 1024, targetMaxLogFiles: UInt8 = 5, rotateCheckInterval: TimeInterval = 300, maxTimeInterval: TimeInterval = 0, appendMarker: String? = "-- ** ** ** --", attributes: [FileAttributeKey : Any]? = nil) {
+    public init(writeToFile: Any, owner: XCGLogger? = nil, outputLevel: XCGLogger.Level = .debug, identifier: String = String(describing: RotatingFileDestination.self), shouldAppend: Bool = true, maxFileSize: UInt64 = 10 * 1024 * 1024, targetMaxLogFiles: UInt8 = 5, rotateCheckInterval: TimeInterval = 300, maxTimeInterval: TimeInterval = 0, appendMarker: String? = "-- ** ** ** --", attributes: [FileAttributeKey : Any]? = nil) {
         self.rotatedTimeInterval = 0
         self.rotateThresholdInterval = rotateCheckInterval
-        super.init(owner: owner ?? LogManager.defaultLogger, writeToFile: writeToFile, identifier: String(describing: RotatingFileDestination.self), shouldAppend: shouldAppend, appendMarker: appendMarker, maxFileSize: maxFileSize, maxTimeInterval: maxTimeInterval, archiveSuffixDateFormatter: RotatingFileDestination.formatter, targetMaxLogFiles: targetMaxLogFiles)
+        super.init(owner: owner ?? LogManager.defaultLogger, writeToFile: writeToFile, identifier: identifier, shouldAppend: shouldAppend, appendMarker: appendMarker, maxFileSize: maxFileSize, maxTimeInterval: maxTimeInterval, archiveSuffixDateFormatter: RotatingFileDestination.formatter, targetMaxLogFiles: targetMaxLogFiles)
         self.outputLevel = outputLevel
     }
     
-    public init(relativePath: String, owner: XCGLogger? = nil, identifier: String = "", outputLevel: XCGLogger.Level = .debug, shouldAppend: Bool = true, maxFileSize: UInt64 = 10 * 1024 * 1024, targetMaxLogFiles: UInt8 = 5, rotateCheckInterval: TimeInterval = 300, maxTimeInterval: TimeInterval = 0, appendMarker: String? = "-- ** ** ** --", attributes: [FileAttributeKey : Any]? = nil) throws {
+    public init(relativePath: String, owner: XCGLogger? = nil, identifier: String = String(describing: RotatingFileDestination.self), outputLevel: XCGLogger.Level = .debug, shouldAppend: Bool = true, maxFileSize: UInt64 = 10 * 1024 * 1024, targetMaxLogFiles: UInt8 = 5, rotateCheckInterval: TimeInterval = 300, maxTimeInterval: TimeInterval = 0, appendMarker: String? = "-- ** ** ** --", attributes: [FileAttributeKey : Any]? = nil) throws {
         let path = try RotatingFileDestination.getPathUrl(relativePath: relativePath)
         self.rotatedTimeInterval = 0
         self.rotateThresholdInterval = rotateCheckInterval
