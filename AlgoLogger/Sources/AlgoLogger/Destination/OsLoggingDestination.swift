@@ -11,8 +11,8 @@ import OSLog
 
 public class OsLoggingDestination : AlgorigoLoggingDestination {
     
-    public init(owner: XCGLogger? = nil, formatter: LogFormatterProtocol? = nil, outputLevel: XCGLogger.Level = .debug) {
-        super.init(owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: String(describing: OsLoggingDestination.self))
+    public override init(owner: XCGLogger? = nil, formatter: LogFormatterProtocol? = nil, outputLevel: XCGLogger.Level = .debug, identifier: String = String(describing: OsLoggingDestination.self)) {
+        super.init(owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier)
     }
     
     public override func write(level: XCGLogger.Level, message: String, date: Date) {
