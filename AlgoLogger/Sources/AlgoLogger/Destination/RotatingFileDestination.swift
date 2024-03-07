@@ -252,6 +252,52 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
             })
     }
     
+    public func registerS3Uploader(
+        accessKey: String,
+        secretKey: String,
+        region: AWSRegionType,
+        bucketName: String,
+        dateFormatter: DateFormatter
+    ) {
+        uploadDisposable?.dispose()
+        uploadDisposable = RotatingFileDestination.getS3Single(accessKey: accessKey, secretKey: secretKey, region: region)
+            .asObservable()
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .flatMap({ [weak self] awsS3 in
+                guard let self = self else { return Observable<Never>.error(RotatingFileDestinationError.destinationReleased) }
+                
+                return self.getLogFileObservable()
+                    .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+                    .flatMap({ url in
+                        if let logFile = LogFile(url: url) {
+                            return Observable.just(logFile)
+                        } else {
+                            return Observable.empty()
+                        }
+                    })
+                    .filter({ logFile in
+                        logFile.postfix.isEmpty
+                    })
+                    .concatMap { logFile in
+                        return awsS3
+                            .putObjectCompletable(logFile: logFile, bucketName: bucketName) { logFile in
+                                dateFormatter.string(from: logFile.rotatedDate)
+                            }
+                            .retry(when: { errorObservable in
+                                errorObservable
+                                    .delay(RxTimeInterval.seconds(60), scheduler: ConcurrentDispatchQueueScheduler(qos: .background))
+                            })
+                            .do(onCompleted: {
+                                _ = RotatingFileDestination.setPostfix(logFile: logFile, postfix: "s3")
+                            })
+                    }
+            })
+            .ignoreElements()
+            .subscribe(onError: { [weak self] error in
+                self?.owner?.info("registerS3Uploader error", userInfo: [L.error: error])
+            })
+    }
+    
     public func unregisterUploader() {
         uploadDisposable?.dispose()
         uploadDisposable = nil
