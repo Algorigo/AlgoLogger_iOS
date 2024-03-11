@@ -102,7 +102,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
             .disposed(by: self.disposeBag)
     }
     
-    convenience init(
+    public convenience init(
         logGroupName: String,
         logStreamName: String,
         accessKey: String,
@@ -178,7 +178,10 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 if let error = error {
                     observer(.failure(error))
                 } else {
-                    observer(.success(response?.logGroups?.isEmpty == false))
+                    let exist = response?.logGroups?.contains(where: { group in
+                        group.logGroupName == logGroupName
+                    }) == true
+                    observer(.success(exist))
                 }
             }
             return Disposables.create()
@@ -233,6 +236,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
             }
             return Disposables.create()
         })
+        .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
     }
 
     private func ensureLogStream(
@@ -272,7 +276,10 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 if let error = error {
                     observer(.failure(error))
                 } else {
-                    observer(.success(response?.logStreams?.isEmpty == false))
+                    let exist = response?.logStreams?.contains(where: { stream in
+                        stream.logStreamName == logStreamName
+                    }) == true
+                    observer(.success(exist))
                 }
             }
             return Disposables.create()

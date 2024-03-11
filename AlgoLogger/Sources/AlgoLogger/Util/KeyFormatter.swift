@@ -70,7 +70,7 @@ public class KeyFormatter: DateFormatter {
         }
     }
     
-    init(pattern: String) {
+    public init(pattern: String) {
         super.init()
         setPattern(pattern)
     }

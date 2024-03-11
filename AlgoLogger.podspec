@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "AlgoLogger"
-  spec.version      = "0.1.2"
+  spec.version      = "0.2.0"
   spec.summary      = "Logger Library of Algorigo"
   spec.swift_version = '5.7'
 
