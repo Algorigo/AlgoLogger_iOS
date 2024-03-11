@@ -102,7 +102,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
             .disposed(by: self.disposeBag)
     }
     
-    convenience init(
+    public convenience init(
         logGroupName: String,
         logStreamName: String,
         accessKey: String,
