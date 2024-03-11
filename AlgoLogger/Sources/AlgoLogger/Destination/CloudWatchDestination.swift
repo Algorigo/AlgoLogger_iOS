@@ -178,7 +178,10 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 if let error = error {
                     observer(.failure(error))
                 } else {
-                    observer(.success(response?.logGroups?.isEmpty == false))
+                    let exist = response?.logGroups?.contains(where: { group in
+                        group.logGroupName == logGroupName
+                    }) == true
+                    observer(.success(exist))
                 }
             }
             return Disposables.create()
@@ -273,7 +276,10 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 if let error = error {
                     observer(.failure(error))
                 } else {
-                    observer(.success(response?.logStreams?.isEmpty == false))
+                    let exist = response?.logStreams?.contains(where: { stream in
+                        stream.logStreamName == logStreamName
+                    }) == true
+                    observer(.success(exist))
                 }
             }
             return Disposables.create()
