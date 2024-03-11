@@ -233,6 +233,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
             }
             return Disposables.create()
         })
+        .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
     }
 
     private func ensureLogStream(
