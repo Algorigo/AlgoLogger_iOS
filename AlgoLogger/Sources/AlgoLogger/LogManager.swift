@@ -18,7 +18,7 @@ public class LogManager {
         return instance
     }
     
-    fileprivate var loggerDict = [Tag: XCGLogger]()
+    fileprivate var loggerDict = [String: XCGLogger]()
     
     public func initTags(_ tags: Tag...) {
         for tag in tags {
@@ -27,12 +27,16 @@ public class LogManager {
     }
     
     public func getLogger(_ tag: Tag) -> XCGLogger {
-        return loggerDict[tag.topParent] ?? initLogger(tag)
+        return getLogger(tag.topParent.name)
     }
     
-    fileprivate func initLogger(_ tag: Tag) -> XCGLogger {
-        let logger = XCGLogger(identifier: tag.topParent.name, includeDefaultDestinations: false)
-        loggerDict[tag] = logger
+    public func getLogger(_ identifier: String) -> XCGLogger {
+        return loggerDict[identifier] ?? initLogger(identifier)
+    }
+    
+    fileprivate func initLogger(_ identifier: String) -> XCGLogger {
+        let logger = XCGLogger(identifier: identifier, includeDefaultDestinations: false)
+        loggerDict[identifier] = logger
         return logger
     }
 }
