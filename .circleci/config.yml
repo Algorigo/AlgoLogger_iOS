@@ -1,0 +1,50 @@
+version: 2.1
+
+jobs:
+  build:
+    macos:
+      xcode: "14.2.0"
+    resource_class: macos.x86.medium.gen2
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      # Commands will execute in macOS container
+      # with Xcode 14.2.0 installed
+      - run: xcodebuild -version
+      - run: sudo gem install cocoapods
+      - run: pod --version
+      - checkout
+      - run: pod spec lint AlgoLogger.podspec --allow-warnings --verbose
+  deploy:
+    macos:
+      xcode: "14.2.0"
+    resource_class: macos.x86.medium.gen2
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      # Commands will execute in macOS container
+      # with Xcode 14.2.0 installed
+      - run: xcodebuild -version
+      - run: sudo gem install cocoapods
+      - run: pod --version
+      - checkout
+      - run: pod trunk push AlgoLogger.podspec --allow-warnings --verbose
+  
+      
+workflows:
+  build-workflow: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: /^[0-9]+\.[0-9]+\.[0-9]+$/
+  deploy-workflow: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^[0-9]+\.[0-9]+\.[0-9]+$/
