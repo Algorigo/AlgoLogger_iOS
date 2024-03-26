@@ -5,6 +5,9 @@
       location = "group:AlgoLogger.podspec">
    </FileRef>
    <FileRef
+      location = "group:.circleci/config.yml">
+   </FileRef>
+   <FileRef
       location = "group:AlgoLogger">
    </FileRef>
    <FileRef
