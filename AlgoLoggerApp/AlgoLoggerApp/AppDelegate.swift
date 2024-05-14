@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let cloudWatchDestination = CloudWatchDestination(
             logGroupName: "/test/algorigo_logger_ios_native",
             logStreamName: "device_id",
-            identityPoolId: AppDelegate.identityPoolId,
+            credentialsProviderHolder: CredentialsProviderHolder.identityPoolProvider(identityPoolId: AppDelegate.identityPoolId, region: AppDelegate.region),
             region: AppDelegate.region,
             outputLevel: .info,
             logGroupRetentionDays: .day_1

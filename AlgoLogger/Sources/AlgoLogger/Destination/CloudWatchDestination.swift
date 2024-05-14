@@ -31,7 +31,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
     public init(
         logGroupNameSingle: Single<String>,
         logStreamNameSingle: Single<String>,
-        credentialProvider: AWSCredentialsProvider,
+        credentialsProviderHolder: CredentialsProviderHolder,
         region: AWSRegionType,
         owner: XCGLogger? = nil,
         formatter: LogFormatterProtocol? = nil,
@@ -46,9 +46,9 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         createLogGroup: Bool = true,
         createLogStream: Bool = true
     ) {
-        let key = "CloudWatch_\(credentialProvider)_\(region)"
+        let key = "CloudWatch_\(credentialsProviderHolder.credentialsProvider)_\(region)"
         
-        let configuration = AWSServiceConfiguration(region: region, credentialsProvider: credentialProvider)!
+        let configuration = AWSServiceConfiguration(region: region, credentialsProvider: credentialsProviderHolder.credentialsProvider)!
         AWSLogs.register(with: configuration, forKey: key)
         self.client = AWSLogs(forKey: key)
         
@@ -104,8 +104,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
     public convenience init(
         logGroupName: String,
         logStreamName: String,
-        accessKey: String,
-        secretKey: String,
+        credentialsProviderHolder: CredentialsProviderHolder,
         region: AWSRegionType,
         owner: XCGLogger? = nil,
         formatter: LogFormatterProtocol? = nil,
@@ -120,28 +119,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         createLogGroup: Bool = true,
         createLogStream: Bool = true
     ) {
-        self.init(logGroupNameSingle: Single.just(logGroupName), logStreamNameSingle: Single.just(logStreamName), credentialProvider: AWSStaticCredentialsProvider(accessKey: accessKey, secretKey: secretKey), region: region, owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier, useQueue: useQueue, sendInterval: sendInterval, maxQueueSize: maxQueueSize, maxBatchCount: maxBatchCount, maxMessageSize: maxMessageSize, logGroupRetentionDays: logGroupRetentionDays, createLogGroup: createLogGroup, createLogStream: createLogStream)
-    }
-    
-    public convenience init(
-        logGroupName: String,
-        logStreamName: String,
-        identityPoolId: String,
-        region: AWSRegionType,
-        owner: XCGLogger? = nil,
-        formatter: LogFormatterProtocol? = nil,
-        outputLevel: XCGLogger.Level = .info,
-        identifier: String = String(describing: CloudWatchDestination.self),
-        useQueue: Bool = true,
-        sendInterval: TimeInterval = 60, // 1 minutes
-        maxQueueSize: Int = 1048576, // 1 MBytes
-        maxBatchCount: Int = 10000,
-        maxMessageSize: Int = 262114, // 256 KBytes
-        logGroupRetentionDays: RetentionDays = RetentionDays.month_6,
-        createLogGroup: Bool = true,
-        createLogStream: Bool = true
-    ) {
-        self.init(logGroupNameSingle: Single.just(logGroupName), logStreamNameSingle: Single.just(logStreamName), credentialProvider: AWSCognitoCredentialsProvider(regionType: region, identityPoolId: identityPoolId), region: region, owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier, useQueue: useQueue, sendInterval: sendInterval, maxQueueSize: maxQueueSize, maxBatchCount: maxBatchCount, maxMessageSize: maxMessageSize, logGroupRetentionDays: logGroupRetentionDays, createLogGroup: createLogGroup, createLogStream: createLogStream)
+        self.init(logGroupNameSingle: Single.just(logGroupName), logStreamNameSingle: Single.just(logStreamName), credentialsProviderHolder: credentialsProviderHolder, region: region, owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier, useQueue: useQueue, sendInterval: sendInterval, maxQueueSize: maxQueueSize, maxBatchCount: maxBatchCount, maxMessageSize: maxMessageSize, logGroupRetentionDays: logGroupRetentionDays, createLogGroup: createLogGroup, createLogStream: createLogStream)
     }
     
     private func initCloudWatch(
