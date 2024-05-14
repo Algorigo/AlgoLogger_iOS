@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     static let accessKey = ""
     static let secretKey = ""
+    static let identityPoolId = ""
     static let region = AWSRegionType.APNortheast2
 
 
@@ -34,10 +35,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let cloudWatchDestination = CloudWatchDestination(
-            logGroupNameSingle: Single<String>.just("/test/algorigo_logger_ios_native"),
-            logStreamNameSingle: Single<String>.just("device_id"),
-            accessKey: AppDelegate.accessKey,
-            secretKey: AppDelegate.secretKey,
+            logGroupName: "/test/algorigo_logger_ios_native",
+            logStreamName: "device_id",
+            credentialsProviderHolder: CredentialsProviderHolder.identityPoolProvider(identityPoolId: AppDelegate.identityPoolId, region: AppDelegate.region),
             region: AppDelegate.region,
             outputLevel: .info,
             logGroupRetentionDays: .day_1

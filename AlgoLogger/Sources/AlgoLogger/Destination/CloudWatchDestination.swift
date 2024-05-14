@@ -31,8 +31,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
     public init(
         logGroupNameSingle: Single<String>,
         logStreamNameSingle: Single<String>,
-        accessKey: String,
-        secretKey: String,
+        credentialsProviderHolder: CredentialsProviderHolder,
         region: AWSRegionType,
         owner: XCGLogger? = nil,
         formatter: LogFormatterProtocol? = nil,
@@ -47,9 +46,9 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         createLogGroup: Bool = true,
         createLogStream: Bool = true
     ) {
-        let key = "CloudWatch_\(accessKey)_\(region)"
-        let credential = AWSStaticCredentialsProvider(accessKey: accessKey, secretKey: secretKey)
-        let configuration = AWSServiceConfiguration(region: region, credentialsProvider: credential)!
+        let key = "CloudWatch_\(credentialsProviderHolder.credentialsProvider)_\(region)"
+        
+        let configuration = AWSServiceConfiguration(region: region, credentialsProvider: credentialsProviderHolder.credentialsProvider)!
         AWSLogs.register(with: configuration, forKey: key)
         self.client = AWSLogs(forKey: key)
         
@@ -105,8 +104,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
     public convenience init(
         logGroupName: String,
         logStreamName: String,
-        accessKey: String,
-        secretKey: String,
+        credentialsProviderHolder: CredentialsProviderHolder,
         region: AWSRegionType,
         owner: XCGLogger? = nil,
         formatter: LogFormatterProtocol? = nil,
@@ -121,7 +119,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         createLogGroup: Bool = true,
         createLogStream: Bool = true
     ) {
-        self.init(logGroupNameSingle: Single.just(logGroupName), logStreamNameSingle: Single.just(logStreamName), accessKey: accessKey, secretKey: secretKey, region: region, owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier, useQueue: useQueue, sendInterval: sendInterval, maxQueueSize: maxQueueSize, maxBatchCount: maxBatchCount, maxMessageSize: maxMessageSize, logGroupRetentionDays: logGroupRetentionDays, createLogGroup: createLogGroup, createLogStream: createLogStream)
+        self.init(logGroupNameSingle: Single.just(logGroupName), logStreamNameSingle: Single.just(logStreamName), credentialsProviderHolder: credentialsProviderHolder, region: region, owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier, useQueue: useQueue, sendInterval: sendInterval, maxQueueSize: maxQueueSize, maxBatchCount: maxBatchCount, maxMessageSize: maxMessageSize, logGroupRetentionDays: logGroupRetentionDays, createLogGroup: createLogGroup, createLogStream: createLogStream)
     }
     
     private func initCloudWatch(

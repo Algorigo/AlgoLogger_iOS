@@ -143,14 +143,12 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
     }
     
     fileprivate static func getS3Single(
-        accessKey: String,
-        secretKey: String,
+        credentialsProviderHolder: CredentialsProviderHolder,
         region: AWSRegionType
     ) -> Single<AWSS3> {
         return Single<AWSS3>.create(subscribe: { observer in
-            let key = "S3_\(accessKey)_\(region)"
-            let credential = AWSStaticCredentialsProvider(accessKey: accessKey, secretKey: secretKey)
-            let configuration = AWSServiceConfiguration(region: region, credentialsProvider: credential)!
+            let key = "S3_\(credentialsProviderHolder.credentialsProvider)_\(region)"
+            let configuration = AWSServiceConfiguration(region: region, credentialsProvider: credentialsProviderHolder.credentialsProvider)!
             AWSS3.register(with: configuration, forKey: key)
             observer(.success(AWSS3.s3(forKey: key)))
             return Disposables.create()
@@ -237,14 +235,13 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
     }
     
     public func registerS3Uploader(
-        accessKey: String,
-        secretKey: String,
+        credentialsProviderHolder: CredentialsProviderHolder,
         region: AWSRegionType,
         bucketName: String,
         keyDelegate: @escaping (LogFile) -> String
     ) {
         uploadDisposable?.dispose()
-        uploadDisposable = RotatingFileDestination.getS3Single(accessKey: accessKey, secretKey: secretKey, region: region)
+        uploadDisposable = RotatingFileDestination.getS3Single(credentialsProviderHolder: credentialsProviderHolder, region: region)
             .asObservable()
             .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
             .flatMap({ [weak self] awsS3 in
@@ -281,14 +278,13 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
     }
     
     public func registerS3Uploader(
-        accessKey: String,
-        secretKey: String,
+        credentialsProviderHolder: CredentialsProviderHolder,
         region: AWSRegionType,
         bucketName: String,
         dateFormatter: DateFormatter
     ) {
         uploadDisposable?.dispose()
-        uploadDisposable = RotatingFileDestination.getS3Single(accessKey: accessKey, secretKey: secretKey, region: region)
+        uploadDisposable = RotatingFileDestination.getS3Single(credentialsProviderHolder: credentialsProviderHolder, region: region)
             .asObservable()
             .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
             .flatMap({ [weak self] awsS3 in
