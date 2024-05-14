@@ -103,7 +103,7 @@ class RotatingFileViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
             
-            rotatingFileDestination.registerS3Uploader(accessKey: AppDelegate.accessKey, secretKey: AppDelegate.secretKey, region: AppDelegate.region, bucketName: "woon") { logFile in
+            rotatingFileDestination.registerS3Uploader(credentialsProviderHolder: CredentialsProviderHolder.identityPoolProvider(identityPoolId: AppDelegate.identityPoolId, region: AppDelegate.region), region: AppDelegate.region, bucketName: "woon") { logFile in
                 "log_file/\(RotatingFileViewController.pathFormatter.string(from: logFile.rotatedDate))/algorigo_logger_ios-log-\(RotatingFileViewController.keyFormatter.string(from: logFile.rotatedDate)).log"
             }
         }
