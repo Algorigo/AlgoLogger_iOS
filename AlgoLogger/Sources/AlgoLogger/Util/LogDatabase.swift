@@ -46,12 +46,12 @@ class LogDatabase {
     fileprivate static let DATABASE_NAME = "android_cloudwatch_log.db"
     
     fileprivate static let LOG_TABLE = Table("log")
-    fileprivate static let COLUMN_ID = Expression<Int64>("_id")
-    fileprivate static let COLUMN_MESSAGE = Expression<String>("message")
-    fileprivate static let COLUMN_TIMESTAMP = Expression<Date>("timestamp")
-    fileprivate static let COLUMN_SIZE = Expression<Int64>("size")
-    fileprivate static let COLUMN_CREATED_AT = Expression<Date>("created_at")
-    fileprivate static let COLUMN_SEND_INDEX = Expression<Int64>("send_index")
+    fileprivate static let COLUMN_ID = SQLite.Expression<Int64>("_id")
+    fileprivate static let COLUMN_MESSAGE = SQLite.Expression<String>("message")
+    fileprivate static let COLUMN_TIMESTAMP = SQLite.Expression<Date>("timestamp")
+    fileprivate static let COLUMN_SIZE = SQLite.Expression<Int64>("size")
+    fileprivate static let COLUMN_CREATED_AT = SQLite.Expression<Date>("created_at")
+    fileprivate static let COLUMN_SEND_INDEX = SQLite.Expression<Int64>("send_index")
     
     fileprivate static func getPathUrl(relativePath: String) throws -> URL {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
