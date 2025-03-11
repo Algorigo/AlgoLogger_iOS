@@ -237,6 +237,13 @@
 				Base,
 			);
 			mainGroup = EECDE05A29A7540500719150;
+			packageReferences = (
+				0107DC7D2D7FD04700C4196C /* XCRemoteSwiftPackageReference "dd-sdk-ios" */,
+				0107DC7E2D7FEC9C00C4196C /* XCRemoteSwiftPackageReference "XCGLogger" */,
+				0107DC7F2D7FECBF00C4196C /* XCRemoteSwiftPackageReference "RxSwift" */,
+				0107DC802D7FECCF00C4196C /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */,
+				0107DC812D7FECE300C4196C /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+			);
 			productRefGroup = EECDE06429A7540500719150 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -629,6 +636,49 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0107DC7D2D7FD04700C4196C /* XCRemoteSwiftPackageReference "dd-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Datadog/dd-sdk-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.24.0;
+			};
+		};
+		0107DC7E2D7FEC9C00C4196C /* XCRemoteSwiftPackageReference "XCGLogger" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/DaveWoodCom/XCGLogger.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.5;
+			};
+		};
+		0107DC7F2D7FECBF00C4196C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+		0107DC802D7FECCF00C4196C /* XCRemoteSwiftPackageReference "aws-sdk-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aws-amplify/aws-sdk-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.40.1;
+			};
+		};
+		0107DC812D7FECE300C4196C /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		EECDE09729A7547300719150 /* AlgoLogger */ = {
