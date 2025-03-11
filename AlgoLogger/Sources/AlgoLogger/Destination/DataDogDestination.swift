@@ -22,9 +22,9 @@ public class DataDogDestination: BaseDestination {
         
         super.init(owner: owner ?? LogManager.defaultLogger, identifier: identifier)
         if let formatter = formatter {
-            self.formatters = [formatter, DefaultFormatter(useUTC: false)]
+            self.formatters = [formatter, SimpleFormatter()]
         } else {
-            self.formatters = [DefaultFormatter(useUTC: false)]
+            self.formatters = [SimpleFormatter()]
         }
         self.outputLevel = outputLevel
     }
@@ -38,11 +38,11 @@ public class DataDogDestination: BaseDestination {
         guard !self.shouldExclude(logDetails: &logDetails, message: &message) else { return }
         
         self.applyFormatters(logDetails: &logDetails, message: &message)
-        self.write(level: logDetails.level, tag: logDetails.userInfo[L.tag] as? String ?? "", message: message, date: logDetails.date)
+        self.write(level: logDetails.level, tag: logDetails.userInfo[L.tag] as? String ?? "", message: message, date: logDetails.date, error: logDetails.userInfo[L.error] as? Error, callStackSymbols: logDetails.userInfo[L.stackTrace] as? [String])
     }
     
-    fileprivate func write(level: XCGLogger.Level, tag: String, message: String, date: Date) {
-        dataDogLogDelegate.getLogger(tag)?.log(level: level.toLogLevel(), message: message, error: nil, attributes: ["date": date])
+    fileprivate func write(level: XCGLogger.Level, tag: String, message: String, date: Date, error: Error?, callStackSymbols: [String]?) {
+        dataDogLogDelegate.getLogger(tag)?.log(level: level.toLogLevel(), message: message, error: error, attributes: ["date": date, "stack_trace": callStackSymbols?.joined(separator: "\n")])
     }
 }
 
