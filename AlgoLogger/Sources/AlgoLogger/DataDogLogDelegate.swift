@@ -62,11 +62,14 @@ class DataDogLogDelegate: LogDelegate {
     }
     
     func addDDTag(_ key: String, value: String) {
-        tagMap[key] = value
+        let lowerKey = key.lowercased()
+        let lowerValue = value.lowercased()
+        tagMap[lowerKey] = lowerValue
     }
     
     func removeDDTag(_ key: String) {
-        tagMap.removeValue(forKey: key)
+        let lowerKey = key.lowercased()
+        tagMap.removeValue(forKey: lowerKey)
     }
     
     func addAttribute(_ key: String, value: String) {
@@ -77,7 +80,7 @@ class DataDogLogDelegate: LogDelegate {
         attributeMap.removeValue(forKey: key)
     }
     
-    func getLogger(_ tag: Tag) -> LoggerProtocol? {
-        return datadogLogger[tag.name]
+    func getLogger(_ tag: String) -> LoggerProtocol? {
+        return datadogLogger[tag]
     }
 }

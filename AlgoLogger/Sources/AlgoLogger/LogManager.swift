@@ -29,7 +29,7 @@ public class LogManager {
         logDelegate.append(delegate)
     }
     
-    public func getDelegate<T: LogDelegate>() -> T? {
+    public func getDelegate<T: LogDelegate>(_ clazz: T.Type) -> T? {
         return logDelegate.first(where: { $0 is T }) as? T
     }
     
