@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import AlgoLogger
+import DatadogLogs
+import DatadogInternal
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let dataDogLogDelegate = DataDogLogDelegate(clientToken: "", env: "dev", service: "log_test_ios", verbosityLevel: .debug, remoteLogThreshold: .info)
+        dataDogLogDelegate.addDDTag("tagName", "tagValue")
+        dataDogLogDelegate.addAttribute("attributeName", "attributeValue")
+        LogManager.singleton.addDelegate(dataDogLogDelegate)
+        LogManager.singleton.initTags(TestTag, TestTag.TestTag2, TestTag.TestTag2.TestTag3, TestTag.TestTag4)
+        
+        if let dataDogDestination = try? DataDogDestination(outputLevel: .verbose) {
+            _ = dataDogDestination.addTo(tag: TestTag)
+        }
+        
         return true
     }
 

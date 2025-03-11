@@ -22,20 +22,23 @@ public class LogManager {
         return instance
     }
     
-    fileprivate var logDelegate = [LogDelegate]()
+    fileprivate var logDelegates = [LogDelegate]()
     fileprivate var loggerDict = [String: XCGLogger]()
     
     public func addDelegate(_ delegate: LogDelegate) {
-        logDelegate.append(delegate)
+        logDelegates.append(delegate)
     }
     
     public func getDelegate<T: LogDelegate>(_ clazz: T.Type) -> T? {
-        return logDelegate.first(where: { $0 is T }) as? T
+        return logDelegates.first(where: { $0 is T }) as? T
     }
     
     public func initTags(_ tags: Tag...) {
         for tag in tags {
             _ = getLogger(tag)
+            for delegate in logDelegates {
+                delegate.initTag(tag)
+            }
         }
     }
     

@@ -10,7 +10,7 @@ import DatadogLogs
 import DatadogInternal
 
 
-class DataDogLogDelegate: LogDelegate {
+public class DataDogLogDelegate: LogDelegate {
     
     fileprivate var datadogLogger = [String: LoggerProtocol]()
     fileprivate let remoteLogThreshold: LogLevel
@@ -22,7 +22,7 @@ class DataDogLogDelegate: LogDelegate {
     fileprivate var tagMap = [String: String]()
     fileprivate var attributeMap = [String: String]()
     
-    init(clientToken: String, env: String, service: String, verbosityLevel: CoreLoggerLevel = .debug, remoteLogThreshold: LogLevel = .info, networkInfoEnabled: Bool = true, consoleLogFormat: Logger.Configuration.ConsoleLogFormat = .short, remoteSampleRate: Float = SampleRate.maxSampleRate, bundleWithRumEnabled: Bool = true, bundleWithTraceEnabled: Bool = true) {
+    public init(clientToken: String, env: String, service: String, verbosityLevel: CoreLoggerLevel = .debug, remoteLogThreshold: LogLevel = .info, networkInfoEnabled: Bool = true, consoleLogFormat: Logger.Configuration.ConsoleLogFormat = .short, remoteSampleRate: Float = SampleRate.maxSampleRate, bundleWithRumEnabled: Bool = true, bundleWithTraceEnabled: Bool = true) {
         let configuration = Datadog.Configuration(
             clientToken: clientToken,
             env: env,
@@ -40,8 +40,8 @@ class DataDogLogDelegate: LogDelegate {
         self.bundleWithTraceEnabled = bundleWithTraceEnabled
     }
     
-    func initTag(_ tag: Tag) {
-        if Datadog.isInitialized() && datadogLogger.keys.contains(tag.name) {
+    public func initTag(_ tag: Tag) {
+        if Datadog.isInitialized() && !datadogLogger.keys.contains(tag.name) {
             let logger = Logger.create(with: Logger.Configuration(
                 name: tag.name,
                 networkInfoEnabled: networkInfoEnabled,
@@ -61,22 +61,22 @@ class DataDogLogDelegate: LogDelegate {
         }
     }
     
-    func addDDTag(_ key: String, value: String) {
+    public func addDDTag(_ key: String, _ value: String) {
         let lowerKey = key.lowercased()
         let lowerValue = value.lowercased()
         tagMap[lowerKey] = lowerValue
     }
     
-    func removeDDTag(_ key: String) {
+    public func removeDDTag(_ key: String) {
         let lowerKey = key.lowercased()
         tagMap.removeValue(forKey: lowerKey)
     }
     
-    func addAttribute(_ key: String, value: String) {
+    public func addAttribute(_ key: String, _ value: String) {
         attributeMap[key] = value
     }
     
-    func removeAttribute(_ key: String) {
+    public func removeAttribute(_ key: String) {
         attributeMap.removeValue(forKey: key)
     }
     

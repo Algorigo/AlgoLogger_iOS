@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0140F0272D802B720041A934 /* AlgoLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 0140F0262D802B720041A934 /* AlgoLogger */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		0140EFF02D80124A0041A934 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0140F0272D802B720041A934 /* AlgoLogger in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +96,7 @@
 				0140EFDB2D8012480041A934 /* DatadogLoggerApp */,
 				0140EFF22D80124A0041A934 /* DatadogLoggerAppTests */,
 				0140EFFC2D80124A0041A934 /* DatadogLoggerAppUITests */,
+				0140F0252D802B720041A934 /* Frameworks */,
 				0140EFDA2D8012480041A934 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,6 +109,13 @@
 				0140EFF92D80124A0041A934 /* DatadogLoggerAppUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		0140F0252D802B720041A934 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +138,7 @@
 			);
 			name = DatadogLoggerApp;
 			packageProductDependencies = (
+				0140F0262D802B720041A934 /* AlgoLogger */,
 			);
 			productName = DatadogLoggerApp;
 			productReference = 0140EFD92D8012480041A934 /* DatadogLoggerApp.app */;
@@ -569,6 +583,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0140F0262D802B720041A934 /* AlgoLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AlgoLogger;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0140EFD12D8012480041A934 /* Project object */;
 }
