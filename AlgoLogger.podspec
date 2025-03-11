@@ -144,5 +144,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'AWSS3', '~> 2.33.10'
   spec.dependency 'AWSLogs', '~> 2.33.10'
   spec.dependency 'SQLite.swift', '~> 0.14.0'
+  spec.dependency 'DatadogCore', '~> 2.24.0'
+  spec.dependency 'DatadogLogs', '~> 2.24.0'
 
 end

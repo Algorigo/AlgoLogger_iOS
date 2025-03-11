@@ -8,6 +8,10 @@
 import Foundation
 import XCGLogger
 
+public protocol LogDelegate {
+    func initTag(_ tag: Tag)
+}
+
 public class LogManager {
     
     fileprivate static let instance = LogManager()
@@ -18,7 +22,16 @@ public class LogManager {
         return instance
     }
     
+    fileprivate var logDelegate = [LogDelegate]()
     fileprivate var loggerDict = [String: XCGLogger]()
+    
+    public func addDelegate(_ delegate: LogDelegate) {
+        logDelegate.append(delegate)
+    }
+    
+    public func getDelegate<T: LogDelegate>() -> T? {
+        return logDelegate.first(where: { $0 is T }) as? T
+    }
     
     public func initTags(_ tags: Tag...) {
         for tag in tags {

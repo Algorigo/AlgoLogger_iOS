@@ -18,6 +18,7 @@ let package = Package(
         .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.0.0")),
         .package(url: "https://github.com/aws-amplify/aws-sdk-ios-spm.git", .upToNextMajor(from: "2.33.10")),
         .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: "0.15.0")
+        .package(url: "https://github.com/Datadog/dd-sdk-ios.git", from: "2.24.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -33,6 +34,8 @@ let package = Package(
                 .product(name: "AWSS3", package: "aws-sdk-ios-spm"),
                 .product(name: "AWSLogs", package: "aws-sdk-ios-spm"),
                 .product(name: "SQLite", package: "SQLite.swift"),
+                .product(name: "DatadogCore", package: "dd-sdk-ios"),
+                .product(name: "DatadogLogs", package: "dd-sdk-ios"),
             ]),
         .testTarget(
             name: "AlgoLoggerTests",
