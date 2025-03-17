@@ -12,6 +12,10 @@ jobs:
       # with Xcode 14.2.0 installed
       - run: xcodebuild -version
       - run: sudo gem install cocoapods
+      - run: gem list --local
+      - run: sudo gem uninstall concurrent-ruby -v 1.3.5
+      - run: sudo gem install concurrent-ruby --version 1.3.4
+      - run: gem list --local
       - run: pod --version
       - checkout
       - run: pod spec lint AlgoLogger.podspec --allow-warnings --verbose
