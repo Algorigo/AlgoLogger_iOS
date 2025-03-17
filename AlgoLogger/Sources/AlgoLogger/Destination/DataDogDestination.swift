@@ -42,7 +42,7 @@ public class DataDogDestination: BaseDestination {
     }
     
     fileprivate func write(level: XCGLogger.Level, tag: String, message: String, date: Date, error: Error?, callStackSymbols: String?) {
-        dataDogLogDelegate.getLogger(tag)?.log(level: level.toLogLevel(), message: message, error: error, attributes: ["date": date, "error.stack": callStackSymbols])
+        dataDogLogDelegate.getLogger(tag)?.log(level: level.toLogLevel(), message: message, error: error, attributes: ["date": date, "error.message": error?.localizedDescription, "error.stack": callStackSymbols])
     }
 }
 
