@@ -21,7 +21,8 @@ class SimpleFormatter: LogFormatterProtocol, CustomDebugStringConvertible {
     }
     
     func format(logDetails: inout LogDetails, message: inout String) -> String {
-        return "\(logDetails.message) "
+        message = "\(logDetails.message) "
         + (logDetails.fileName.isEmpty ? "" : "(\(URL(string: logDetails.fileName)!.lastPathComponent ):\(logDetails.lineNumber))")
+        return message
     }
 }
