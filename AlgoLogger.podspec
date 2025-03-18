@@ -136,13 +136,13 @@ Pod::Spec.new do |spec|
 
   # spec.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # spec.dependency "JSONKit", "~> 1.4"
-  spec.dependency 'XCGLogger', '~> 7.0.1'
+  spec.dependency 'XCGLogger', '~> 7.1.5'
   spec.dependency 'RxSwift', '~> 6.5.0'
   spec.dependency 'RxCocoa', '~> 6.5.0'
   spec.dependency 'RxRelay', '~> 6.5.0'
-  spec.dependency 'AWSCore', '~> 2.33.10'
-  spec.dependency 'AWSS3', '~> 2.33.10'
-  spec.dependency 'AWSLogs', '~> 2.33.10'
-  spec.dependency 'SQLite.swift', '~> 0.14.0'
+  spec.dependency 'AWSCore', '~> 2.40.1'
+  spec.dependency 'AWSS3', '~> 2.40.1'
+  spec.dependency 'AWSLogs', '~> 2.40.1'
+  spec.dependency 'SQLite.swift', '~> 0.15.3'
 
 end

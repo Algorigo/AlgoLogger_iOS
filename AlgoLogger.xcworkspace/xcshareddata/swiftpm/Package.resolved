@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/aws-amplify/aws-sdk-ios-spm.git",
       "state" : {
-        "revision" : "af3f4e531da838a247d4ab90f9a2472d6c98a78f",
-        "version" : "2.33.10"
+        "revision" : "512a43ed2770957d40618ad415a9826e6dd99ea9",
+        "version" : "2.40.1"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveX/RxSwift.git",
       "state" : {
-        "revision" : "9dcaa4b333db437b0fbfaf453fad29069044a8b4",
-        "version" : "6.6.0"
+        "revision" : "5dd1907d64f0d36f158f61a466bab75067224893",
+        "version" : "6.9.0"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/stephencelis/SQLite.swift.git",
       "state" : {
-        "revision" : "e78ae0220e17525a15ac68c697a155eb7a672a8e",
-        "version" : "0.15.0"
+        "revision" : "a95fc6df17d108bd99210db5e8a9bac90fe984b8",
+        "version" : "0.15.3"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/DaveWoodCom/XCGLogger.git",
       "state" : {
-        "revision" : "a9c4667b247928a29bdd41be2ec2c8d304215a54",
-        "version" : "7.0.1"
+        "revision" : "4def3c1c772ca90ad5e7bfc8ac437c3b0b4276cf",
+        "version" : "7.1.5"
       }
     }
   ],
