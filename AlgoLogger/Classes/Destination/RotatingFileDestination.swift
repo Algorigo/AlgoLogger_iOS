@@ -9,6 +9,7 @@ import Foundation
 import XCGLogger
 import RxSwift
 import RxRelay
+import AlgoLoggerCommon
 
 public enum RotatingFileDestinationError: Error {
     case destinationReleased
@@ -118,7 +119,7 @@ public class RotatingFileDestination: AutoRotatingFileDestination {
         uploadDisposable?.dispose()
         uploadDisposable = completable
             .subscribe(onError: { [weak self] error in
-                self?.owner?.info("registerS3Uploader error", userInfo: [L.errorKey: error])
+                self?.owner?.info("registerS3Uploader error", userInfo: [_Key.errorKey: error])
             })
     }
     

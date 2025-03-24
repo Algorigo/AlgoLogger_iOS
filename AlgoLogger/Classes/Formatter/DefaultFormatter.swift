@@ -7,6 +7,7 @@
 
 import Foundation
 import XCGLogger
+import AlgoLoggerCommon
 
 class DefaultFormatter: LogFormatterProtocol, CustomDebugStringConvertible {
     
@@ -31,13 +32,13 @@ class DefaultFormatter: LogFormatterProtocol, CustomDebugStringConvertible {
     
     func format(logDetails: inout LogDetails, message: inout String) -> String {
         message = "\(formatter.string(for: logDetails.date) ?? String(describing: logDetails.date)) "
-        + "[\(logDetails.level.description):\(logDetails.userInfo[L.tag] ?? "")] "
+        + "[\(logDetails.level.description):\(logDetails.userInfo[_Key.tagKey] ?? "")] "
         + "\(logDetails.message) "
         + (logDetails.fileName.isEmpty ? "" : "(\(URL(string: logDetails.fileName)!.lastPathComponent ):\(logDetails.lineNumber))")
-        if let error = logDetails.userInfo[L.errorKey] as? Error {
+        if let error = logDetails.userInfo[_Key.errorKey] as? Error {
             message += "\n### \(error.localizedDescription)"
         }
-        if let stackTrace = logDetails.userInfo[L.stackTraceKey] as? String,
+        if let stackTrace = logDetails.userInfo[_Key.stackTraceKey] as? String,
            !stackTrace.isEmpty {
             message += "\n### Stack Trace: \(stackTrace)"
         }

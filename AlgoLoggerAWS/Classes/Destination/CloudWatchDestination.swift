@@ -10,6 +10,7 @@ import XCGLogger
 import AWSLogs
 import RxSwift
 import RxRelay
+import AlgoLoggerCommon
 import AlgoLogger
 
 public class CloudWatchDestination: AlgorigoLoggingDestination {
@@ -96,7 +97,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 case .completed:
                     self?.owner?.debug("init cloud watch complete")
                 case .error(let error):
-                    self?.owner?.warning("init cloud watch error", userInfo: [L.errorKey: error])
+                    self?.owner?.warning("init cloud watch error", userInfo: [_Key.errorKey: error])
                 }
             }
             .disposed(by: self.disposeBag)
@@ -133,7 +134,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         return ensureLogGroup(logGroupName: logGroupName, createLogGroup: createLogGroup, retentionDays: retentionDays)
             .andThen(ensureLogStream(logGroupName: logGroupName, logStreamName: logStreamName, createLogStream: createLogStream))
             .do(onError: { [weak self] error in
-                self?.owner?.warning("initCloudWatch error", userInfo: [L.errorKey: error])
+                self?.owner?.warning("initCloudWatch error", userInfo: [_Key.errorKey: error])
             })
             .retry(when: { observable in
                 observable.delay(RxTimeInterval.seconds(60), scheduler: ConcurrentDispatchQueueScheduler(qos: .background))
@@ -334,7 +335,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
             request.sequenceToken = sequenceToken
             self.client.putLogEvents(request) { [weak self] response, error in
                 if let error = error as? NSError {
-                    self?.owner?.warning("put log event error", userInfo: [L.errorKey: error])
+                    self?.owner?.warning("put log event error", userInfo: [_Key.errorKey: error])
                     switch (error.code) {
                     case AWSLogsErrorType.dataAlreadyAccepted.rawValue:
                         observer(.success((true, response?.nextSequenceToken)))
@@ -350,7 +351,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
             return Disposables.create()
         }
         .catch({ [weak self] error in
-            self?.owner?.warning("Failed to deliver logs error", userInfo: [L.errorKey: error])
+            self?.owner?.warning("Failed to deliver logs error", userInfo: [_Key.errorKey: error])
             switch error {
             case CloudWatchDestinationError.putLogsError(let nextSeqeunceToken):
                 return Single<Int>.timer(RxTimeInterval.seconds(1), scheduler: ConcurrentDispatchQueueScheduler(qos: .background))
@@ -427,7 +428,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         do {
             logData = try LogDatabase.LogData(message: message, timestamp: date)
         } catch {
-            self.owner?.warning("message is not decodable", userInfo: [L.errorKey: error])
+            self.owner?.warning("message is not decodable", userInfo: [_Key.errorKey: error])
             return
         }
         

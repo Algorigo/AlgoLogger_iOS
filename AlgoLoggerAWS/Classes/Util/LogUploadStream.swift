@@ -10,6 +10,7 @@ import AWSLogs
 import RxSwift
 import RxRelay
 import XCGLogger
+import AlgoLoggerCommon
 import AlgoLogger
 
 public enum RetentionDays: Int {
@@ -160,7 +161,7 @@ class LogUploadStream {
                 case .completed:
                     break
                 case .error(let error):
-                    self?.logger?.warning("LogUploadStream initialize error", userInfo: [L.errorKey: error])
+                    self?.logger?.warning("LogUploadStream initialize error", userInfo: [_Key.errorKey: error])
                 }
             })
             .disposed(by: disposeBag)

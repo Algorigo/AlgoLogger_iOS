@@ -13,7 +13,7 @@ public class LogManager {
     
     fileprivate static let instance = LogManager()
     
-    static let defaultLogger = XCGLogger(identifier: "AlgoLogger", includeDefaultDestinations: true)
+    static public let defaultLogger = XCGLogger(identifier: "AlgoLogger", includeDefaultDestinations: true)
     
     public static var singleton: LogManager {
         return instance
