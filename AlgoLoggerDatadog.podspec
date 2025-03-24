@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint AlgoLoggerAWS.podspec' to ensure this is a
+# Be sure to run `pod lib lint AlgoLogger.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'AlgoLoggerAWS'
+  s.name             = 'AlgoLoggerDatadog'
   s.version          = '2.1.0'
-  s.summary          = 'Logger AWS Library of Algorigo'
+  s.summary          = 'Logger Library of Algorigo'
   s.swift_version     = '5.0'
 
 # This description is used to generate tags and improve search results.
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
     AlgoLogger is a logger library of Algorigo. It is a simple and easy-to-use logger library that can be used in iOS projects.
                        DESC
 
-  s.homepage     = "https://github.com/Algorigo/AlgoLogger_iOS"
+  s.homepage         = 'https://github.com/Algorigo/AlgoLogger_iOS'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'rouddy' => 'rouddy@naver.com' }
@@ -31,8 +31,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '13.0'
 
-  s.source_files = 'AlgoLoggerAWS/Classes/**/*'
-
+  s.source_files = 'AlgoLogger/Classes/**/*'
 
   # s.resource_bundles = {
   #   'AlgoLogger' => ['AlgoLogger/Assets/*.png']
@@ -45,10 +44,6 @@ Pod::Spec.new do |s|
   s.dependency 'RxSwift', '~> 6.5.0'
   s.dependency 'RxCocoa', '~> 6.5.0'
   s.dependency 'RxRelay', '~> 6.5.0'
-  s.dependency 'AWSCore', '~> 2.40.1'
-  s.dependency 'AWSS3', '~> 2.40.1'
-  s.dependency 'AWSLogs', '~> 2.40.1'
-  s.dependency 'SQLite.swift', '~> 0.15.3'
-  s.dependency 'AlgoLogger', '~> 2.1.0'
+  s.dependency 'AlgoLoggerCommon', '~> 2.1.0'
 
 end

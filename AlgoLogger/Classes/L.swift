@@ -9,9 +9,6 @@ import Foundation
 import AlgoLoggerCommon
 
 public class L {
-    static let tag = "tag"
-    static public let errorKey = "error"
-    static let stackTraceKey = "stackTrace"
     
     public static func verbose(_ tag: Tag, _ closure: @autoclosure () -> Any?, functionName: StaticString = #function, fileName: StaticString = #file, lineNumber: Int = #line, userInfo: [String: Any] = [:], error: Error? = nil, callStackSymbols: [String]? = nil) {
         let userInfo = generateUserInfo(userInfo, tag, error, callStackSymbols)
@@ -50,12 +47,12 @@ public class L {
     
     fileprivate static func generateUserInfo(_ userInfo: [String: Any], _ tag: Tag, _ error: Error? = nil, _ callStackSymbols: [String]? = nil) -> [String: Any] {
         var userInfo = userInfo
-        userInfo[L.tag] = tag.name
+        userInfo[_Key.tagKey] = tag.name
         if let error = error {
-            userInfo[L.errorKey] = error
+            userInfo[_Key.errorKey] = error
         }
         if let callStackSymbols = callStackSymbols {
-            userInfo[L.stackTraceKey] = callStackSymbols.joined(separator: "\n")
+            userInfo[_Key.stackTraceKey] = callStackSymbols.joined(separator: "\n")
         }
         return userInfo
     }
