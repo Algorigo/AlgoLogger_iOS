@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let dataDogLogDelegate = DataDogLogDelegate(clientToken: "", env: "dev", service: "log_test_ios", verbosityLevel: .debug, remoteLogThreshold: .info)
+        let dataDogLogDelegate = DataDogLogDelegate(clientToken: "pubdf67e23f9ed2674f2065125213ccfa43", env: "dev", service: "log_test_ios", verbosityLevel: .debug, remoteLogThreshold: .info)
         dataDogLogDelegate.addDDTag("tagName", "tagValue")
         dataDogLogDelegate.addAttribute("attributeName", "attributeValue")
         LogManager.singleton.addDelegate(dataDogLogDelegate)
