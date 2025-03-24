@@ -1,0 +1,47 @@
+//
+//  ViewController.swift
+//  AlgoLoggerDatadogApp
+//
+//  Created by Rouddy on 3/24/25.
+//
+
+import UIKit
+import RxSwift
+import AlgoLogger
+
+class ViewController: UIViewController {
+    
+    private let disposeBag = DisposeBag()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        
+//        L.debug(TestTag, "destination:\(segue.destination), sender:\(String(describing: sender))")
+        L.verbose(TestTag, "verbose")
+        L.debug(TestTag, "debug")
+        L.info(TestTag, "info")
+        L.notice(TestTag, "notice")
+        L.warning(TestTag, "warning")
+        L.error(TestTag, "error")
+        L.assert(TestTag, "assert")
+        L.warning(TestTag.TestTag2, "TestTag.TestTag2")
+        L.warning(TestTag.TestTag2.TestTag3, "TestTag.TestTag2.TestTag3")
+        L.warning(TestTag.TestTag4, "TestTag.TestTag4")
+        
+        do {
+            throw NSError(domain: "test", code: 0, userInfo: nil)
+        } catch {
+            L.error(TestTag, "error", error: error, callStackSymbols: Thread.callStackSymbols)
+        }
+        
+        Observable<Int>.interval(RxTimeInterval.seconds(5), scheduler: ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribe(onNext: { value in
+                L.info(TestTag.TestTag2, "intervaled:\(value)")
+            })
+            .disposed(by: disposeBag)
+    }
+
+
+}
+
