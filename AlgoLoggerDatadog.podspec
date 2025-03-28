@@ -45,7 +45,7 @@ Pod::Spec.new do |s|
   s.dependency 'RxCocoa', '~> 6.5.0'
   s.dependency 'RxRelay', '~> 6.5.0'
   s.dependency 'AlgoLoggerCommon', '~> 2.1.0'
-  s.dependency 'DatadogCore', '~> 2.24.0'
-  s.dependency 'DatadogLogs', '~> 2.24.0'
+  s.dependency 'DatadogCore', '~> 2.20.0'
+  s.dependency 'DatadogLogs', '~> 2.20.0'
 
 end
