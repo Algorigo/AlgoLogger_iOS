@@ -31,10 +31,10 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '13.0'
 
-  s.source_files = 'AlgoLogger/Classes/**/*'
+  s.source_files = 'AlgoLoggerDatadog/Classes/**/*'
 
   # s.resource_bundles = {
-  #   'AlgoLogger' => ['AlgoLogger/Assets/*.png']
+  #   'AlgoLogger' => ['AlgoLoggerDatadog/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
