@@ -23,7 +23,7 @@ public class DataDogLogDelegate: LogDelegate {
     fileprivate var tagMap = [String: String]()
     fileprivate var attributeMap = [String: String]()
     
-    public init(clientToken: String, env: String, service: String, verbosityLevel: CoreLoggerLevel = .debug, remoteLogThreshold: LogLevel = .info, networkInfoEnabled: Bool = true, consoleLogFormat: Logger.Configuration.ConsoleLogFormat = .short, remoteSampleRate: Float = SampleRate.maxSampleRate, bundleWithRumEnabled: Bool = true, bundleWithTraceEnabled: Bool = true) {
+    public init(clientToken: String, env: String, service: String, verbosityLevel: CoreLoggerLevel = .debug, remoteLogThreshold: LogLevel = .info, networkInfoEnabled: Bool = true, consoleLogFormat: Logger.Configuration.ConsoleLogFormat = .short, remoteSampleRate: Float = 100, bundleWithRumEnabled: Bool = true, bundleWithTraceEnabled: Bool = true) {
         let configuration = Datadog.Configuration(
             clientToken: clientToken,
             env: env,
