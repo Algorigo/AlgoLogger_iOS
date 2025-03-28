@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.name             = 'AlgoLoggerDatadog'
   s.version          = '2.1.0'
   s.summary          = 'Logger Library of Algorigo'
-  s.swift_version     = '5.0'
+  s.swift_version     = '5.9'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -45,5 +45,7 @@ Pod::Spec.new do |s|
   s.dependency 'RxCocoa', '~> 6.5.0'
   s.dependency 'RxRelay', '~> 6.5.0'
   s.dependency 'AlgoLoggerCommon', '~> 2.1.0'
+  s.dependency 'DatadogCore', '~> 2.24.0'
+  s.dependency 'DatadogLogs', '~> 2.24.0'
 
 end
