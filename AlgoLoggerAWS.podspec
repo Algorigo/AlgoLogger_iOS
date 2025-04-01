@@ -48,7 +48,7 @@ Pod::Spec.new do |s|
   s.dependency 'AWSCore', '~> 2.40.1'
   s.dependency 'AWSS3', '~> 2.40.1'
   s.dependency 'AWSLogs', '~> 2.40.1'
-  s.dependency 'SQLite.swift', '~> 0.15.3'
+  s.dependency 'SQLite.swift', '~> 0.13'
   s.dependency 'AlgoLogger', '~> 2.1.0'
 
 end
