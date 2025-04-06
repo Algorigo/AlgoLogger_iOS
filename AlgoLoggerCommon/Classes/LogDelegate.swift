@@ -7,5 +7,5 @@
 
 
 public protocol LogDelegate {
-    func initTag(_ tag: Tag)
+    func initTag(_ tagName: String)
 }
