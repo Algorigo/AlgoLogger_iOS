@@ -41,10 +41,10 @@ public class DataDogLogDelegate: LogDelegate {
         self.bundleWithTraceEnabled = bundleWithTraceEnabled
     }
     
-    public func initTag(_ tag: Tag) {
-        if Datadog.isInitialized() && !datadogLogger.keys.contains(tag.name) {
+    public func initTag(_ tagName: String) {
+        if Datadog.isInitialized() && !datadogLogger.keys.contains(tagName) {
             let logger = Logger.create(with: Logger.Configuration(
-                name: tag.name,
+                name: tagName,
                 networkInfoEnabled: networkInfoEnabled,
                 bundleWithRumEnabled: bundleWithRumEnabled,
                 bundleWithTraceEnabled: bundleWithTraceEnabled,
@@ -58,7 +58,7 @@ public class DataDogLogDelegate: LogDelegate {
             attributeMap.forEach { (key, value) in
                 logger.addAttribute(forKey: key, value: value)
             }
-            datadogLogger[tag.name] = logger
+            datadogLogger[tagName] = logger
         }
     }
     

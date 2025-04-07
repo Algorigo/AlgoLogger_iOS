@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Rouddy on 2/20/24.
 //
@@ -11,10 +11,6 @@ open class Tag {
     
     fileprivate let parent: Tag.Type?
     
-    var topParent: Tag {
-        return parent?.init().topParent ?? self
-    }
-    
     public required init() {
         parent = nil
     }
@@ -23,7 +19,11 @@ open class Tag {
         self.parent = parent
     }
     
-    public var name: String {
+    open var topParent: Tag {
+        return parent?.init().topParent ?? self
+    }
+    
+    open var name: String {
         if let parent = parent {
             return parent.init().name + "." + getSingleName()
         } else {
@@ -33,10 +33,6 @@ open class Tag {
     
     fileprivate func getSingleName() -> String {
         return String(String(describing: self).split(separator: ".").last!).replacingOccurrences(of: "_", with: "")
-    }
-    
-    public func getTopParentName() -> String {
-        return topParent.name
     }
 }
 

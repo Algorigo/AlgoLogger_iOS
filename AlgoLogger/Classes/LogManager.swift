@@ -21,9 +21,13 @@ public class LogManager {
     
     fileprivate var logDelegates = [LogDelegate]()
     fileprivate var loggerDict = [String: XCGLogger]()
+    fileprivate var tagNames = Set<String>()
     
     public func addDelegate(_ delegate: LogDelegate) {
         logDelegates.append(delegate)
+        for tagName in tagNames {
+            delegate.initTag(tagName)
+        }
     }
     
     public func getDelegate<T: LogDelegate>(_ clazz: T.Type) -> T? {
@@ -33,14 +37,15 @@ public class LogManager {
     public func initTags(_ tags: AlgoLoggerCommon.Tag...) {
         for tag in tags {
             _ = getLogger(tag)
+            tagNames.insert(tag.name)
             for delegate in logDelegates {
-                delegate.initTag(tag)
+                delegate.initTag(tag.name)
             }
         }
     }
     
     public func getLogger(_ tag: AlgoLoggerCommon.Tag) -> XCGLogger {
-        return getLogger(tag.getTopParentName())
+        return getLogger(tag.topParent.name)
     }
     
     public func getLogger(_ identifier: String) -> XCGLogger {
