@@ -28,7 +28,7 @@ let package = Package(
         .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.9.0")),
         .package(url: "https://github.com/aws-amplify/aws-sdk-ios-spm.git", .upToNextMajor(from: "2.36.0")),
         .package(url: "https://github.com/stephencelis/SQLite.swift.git", .upToNextMajor(from: "0.13.0")),
-        .package(url: "https://github.com/DataDog/dd-sdk-ios.git", exact: "2.20.0"),
+        .package(url: "https://github.com/DataDog/dd-sdk-ios.git", exact: "2.25.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
