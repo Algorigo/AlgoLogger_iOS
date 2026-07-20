@@ -41,11 +41,11 @@ Pod::Spec.new do |s|
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'XCGLogger', '~> 7.1.5'
-  s.dependency 'RxSwift', '~> 6.5.0'
-  s.dependency 'RxCocoa', '~> 6.5.0'
-  s.dependency 'RxRelay', '~> 6.5.0'
+  s.dependency 'RxSwift', '~> 6.10.2'
+  s.dependency 'RxCocoa', '~> 6.10.2'
+  s.dependency 'RxRelay', '~> 6.10.2'
   s.dependency 'AlgoLoggerCommon', '~> 2.1.6'
-  s.dependency 'DatadogCore', '3.3.0'
-  s.dependency 'DatadogLogs', '3.3.0'
+  s.dependency 'DatadogCore', '3.13.0'
+  s.dependency 'DatadogLogs', '3.13.0'
 
 end
