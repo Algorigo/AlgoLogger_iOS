@@ -69,8 +69,20 @@ targets: [
 아래 순서대로 진행합니다.
 
 1. 버전 업데이트
-- 배포 대상 podspec 파일의 s.version 값을 올립니다.
-- 의존 pod 버전도 필요한 경우 함께 올립니다.
+- 권장: 루트의 `adjust_version.sh` 스크립트로 버전을 일괄 업데이트합니다.
+
+```bash
+sh adjust_version.sh x.y.z
+```
+
+- 예시:
+
+```bash
+sh adjust_version.sh 2.1.8
+```
+
+- 스크립트 실행 후 변경된 podspec/패키지 파일 diff를 확인합니다.
+- 의존 pod 버전도 필요한 경우 함께 점검합니다.
 
 2. Git 태그 준비
 
