@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AlgoLoggerAWS'
-  s.version          = '2.1.6'
+  s.version          = '2.1.8'
   s.summary          = 'Logger AWS Library of Algorigo'
   s.swift_version     = '5.0'
 
@@ -49,6 +49,6 @@ Pod::Spec.new do |s|
   s.dependency 'AWSS3', '~> 2.41.0'
   s.dependency 'AWSLogs', '~> 2.41.0'
   s.dependency 'SQLite.swift', '~> 0.16.0'
-  s.dependency 'AlgoLogger', '~> 2.1.6'
+  s.dependency 'AlgoLogger', '~> 2.1.8'
 
 end
