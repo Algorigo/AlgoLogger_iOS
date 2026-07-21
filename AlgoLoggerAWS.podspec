@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AlgoLoggerAWS'
-  s.version          = '2.1.8'
+  s.version          = '2.1.9'
   s.summary          = 'Logger AWS Library of Algorigo'
   s.swift_version     = '5.0'
 
@@ -42,13 +42,13 @@ Pod::Spec.new do |s|
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'XCGLogger', '~> 7.1.5'
-  s.dependency 'RxSwift', '~> 6.10.2'
-  s.dependency 'RxCocoa', '~> 6.10.2'
-  s.dependency 'RxRelay', '~> 6.10.2'
+  s.dependency 'RxSwift', '~> 6.9.0'
+  s.dependency 'RxCocoa', '~> 6.9.0'
+  s.dependency 'RxRelay', '~> 6.9.0'
   s.dependency 'AWSCore', '~> 2.41.0'
   s.dependency 'AWSS3', '~> 2.41.0'
   s.dependency 'AWSLogs', '~> 2.41.0'
   s.dependency 'SQLite.swift', '~> 0.16.0'
-  s.dependency 'AlgoLogger', '~> 2.1.8'
+  s.dependency 'AlgoLogger', '~> 2.1.9'
 
 end

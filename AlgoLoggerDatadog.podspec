@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AlgoLoggerDatadog'
-  s.version          = '2.1.8'
+  s.version          = '2.1.9'
   s.summary          = 'Logger Library of Algorigo'
   s.swift_version     = '5.9'
 
@@ -41,11 +41,11 @@ Pod::Spec.new do |s|
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'XCGLogger', '~> 7.1.5'
-  s.dependency 'RxSwift', '~> 6.10.2'
-  s.dependency 'RxCocoa', '~> 6.10.2'
-  s.dependency 'RxRelay', '~> 6.10.2'
-  s.dependency 'AlgoLoggerCommon', '~> 2.1.8'
-  s.dependency 'DatadogCore', '3.13.0'
-  s.dependency 'DatadogLogs', '3.13.0'
+  s.dependency 'RxSwift', '~> 6.9.0'
+  s.dependency 'RxCocoa', '~> 6.9.0'
+  s.dependency 'RxRelay', '~> 6.9.0'
+  s.dependency 'AlgoLoggerCommon', '~> 2.1.9'
+  s.dependency 'DatadogCore', '3.14.0'
+  s.dependency 'DatadogLogs', '3.14.0'
 
 end
