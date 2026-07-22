@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/DataDog/dd-sdk-ios.git",
       "state" : {
-        "revision" : "8446c244769af48f3fdd7e10bcebb3012371511c",
-        "version" : "3.13.0"
+        "revision" : "b0df3de0e993543a5c53d9f636a6cfb51f0f6b11",
+        "version" : "3.14.0"
       }
     },
     {
