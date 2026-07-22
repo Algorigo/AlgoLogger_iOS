@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AlgoLoggerDatadog'
-  s.version          = '2.1.9'
+  s.version          = '2.1.10'
   s.summary          = 'Logger Library of Algorigo'
   s.swift_version     = '5.9'
 
