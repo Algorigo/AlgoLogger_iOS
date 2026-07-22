@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AlgoLoggerDatadog'
-  s.version          = '2.1.9'
+  s.version          = '2.1.10'
   s.summary          = 'Logger Library of Algorigo'
   s.swift_version     = '5.9'
 
@@ -45,7 +45,7 @@ Pod::Spec.new do |s|
   s.dependency 'RxCocoa', '~> 6.9.0'
   s.dependency 'RxRelay', '~> 6.9.0'
   s.dependency 'AlgoLoggerCommon', '~> 2.1.9'
-  s.dependency 'DatadogCore', '3.14.0'
-  s.dependency 'DatadogLogs', '3.14.0'
+  s.dependency 'DatadogCore', '~> 3.13.0'
+  s.dependency 'DatadogLogs', '~> 3.13.0'
 
 end
