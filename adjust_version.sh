@@ -15,7 +15,5 @@ tag=$1
 sed -i '' "s/s.version          = '.*'/s.version          = '$tag'/" AlgoLoggerCommon.podspec
 sed -i '' "s/s.version          = '.*'/s.version          = '$tag'/" AlgoLogger.podspec
 sed -i '' "s/s.dependency 'AlgoLoggerCommon', '~> .*'/s.dependency 'AlgoLoggerCommon', '~> $tag'/" AlgoLogger.podspec
-sed -i '' "s/s.version          = '.*'/s.version          = '$tag'/" AlgoLoggerAWS.podspec
-sed -i '' "s/s.dependency 'AlgoLogger', '~> .*'/s.dependency 'AlgoLogger', '~> $tag'/" AlgoLoggerAWS.podspec
 sed -i '' "s/s.version          = '.*'/s.version          = '$tag'/" AlgoLoggerDatadog.podspec
 sed -i '' "s/s.dependency 'AlgoLoggerCommon', '~> .*'/s.dependency 'AlgoLoggerCommon', '~> $tag'/" AlgoLoggerDatadog.podspec

@@ -26,7 +26,7 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/DaveWoodCom/XCGLogger.git", from: "7.1.5"),
         .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.10.2")),
-        .package(url: "https://github.com/awslabs/aws-sdk-swift.git", .upToNextMajor(from: "1.7.49")),
+        .package(url: "https://github.com/awslabs/aws-sdk-swift.git", .upToNextMajor(from: "1.7.27")),
         .package(url: "https://github.com/stephencelis/SQLite.swift.git", .upToNextMajor(from: "0.15.4")),
         .package(url: "https://github.com/DataDog/dd-sdk-ios.git", .upToNextMajor(from: "3.13.0")),
     ],
