@@ -8,16 +8,21 @@
 import AlgoLogger
 import RxSwift
 import AWSS3
+import AWSClientRuntime
+import Foundation
+import Smithy
+import SmithyStreams
+import AWSSDKIdentity
 
-class AwsNotConfigured: Error {
-    
+enum RotatingFileError: Error {
+    case inputStreamError
 }
 
 extension RotatingFileDestination {
     
     public func registerS3Uploader(
         credentialsProviderHolder: CredentialsProviderHolder,
-        region: AWSRegionType,
+        region: AWSRegion,
         bucketName: String,
         keyDelegate: @escaping (RatatingLogFile) -> String
     ) {
@@ -50,7 +55,7 @@ extension RotatingFileDestination {
     
     public func registerS3Uploader(
         credentialsProviderHolder: CredentialsProviderHolder,
-        region: AWSRegionType,
+        region: AWSRegion,
         bucketName: String,
         dateFormatter: DateFormatter
     ) {
@@ -85,19 +90,30 @@ extension RotatingFileDestination {
     
     fileprivate static func getS3Single(
         credentialsProviderHolder: CredentialsProviderHolder,
-        region: AWSRegionType
-    ) -> Single<AWSS3> {
-        return Single<AWSS3>.create(subscribe: { observer in
-            let key = "S3_\(credentialsProviderHolder.credentialsProvider)_\(region)"
-            let configuration = AWSServiceConfiguration(region: region, credentialsProvider: credentialsProviderHolder.credentialsProvider)!
-            AWSS3.register(with: configuration, forKey: key)
-            observer(.success(AWSS3.s3(forKey: key)))
+        region: AWSRegion
+    ) -> Single<S3Client> {
+        return Single<S3Client>.create(subscribe: { observer in
+            do {
+                let configuration: S3Client.Configuration
+                switch credentialsProviderHolder {
+                case .accessKeyProvider(let accessKey, let secretKey):
+                    let credential = AWSCredentialIdentity(accessKey: accessKey, secret: secretKey)
+                    let resolver = StaticAWSCredentialIdentityResolver(credential)
+                    configuration = try S3Client.Configuration(awsCredentialIdentityResolver: resolver, region: region.rawValue)
+                case .identityPoolProvider(let resolver):
+                    configuration = try S3Client.Configuration(region: region.rawValue, authSchemeResolver: resolver)
+                }
+                let client = S3Client(config: configuration)
+                observer(.success(client))
+            } catch {
+                observer(.failure(error))
+            }
             return Disposables.create()
         })
     }
 }
 
-extension AWSS3 {
+extension S3Client {
     func putObjectCompletable(logFile: RatatingLogFile, bucketName: String, keyDelegate: @escaping (RatatingLogFile) -> String) -> Completable {
         return Completable.create { [weak self] observer in
             guard let self = self else {
@@ -105,23 +121,20 @@ extension AWSS3 {
                 return Disposables.create()
             }
             
-            if FileManager.default.fileExists(atPath: logFile.path),
-               let data = try? Data(contentsOf: URL(fileURLWithPath: logFile.path)) {
-                if let request = AWSS3PutObjectRequest() {
-                    request.bucket = bucketName
-                    request.key = keyDelegate(logFile)
-                    request.body = data
-                    request.contentLength = NSNumber(value: UInt64(data.count))
-                    request.contentType = "text/plain"
-                    self.putObject(request) { output, error in
-                        if let error = error {
-                            observer(.error(error))
-                        } else {
-                            observer(.completed)
-                        }
+            if FileManager.default.fileExists(atPath: logFile.path) {
+                let fileURL = URL(fileURLWithPath: logFile.path)
+                let fileName = fileURL.lastPathComponent
+                do {
+                    let fileHandle = try FileHandle(forReadingFrom: fileURL)
+                    let byteStream = ByteStream.stream(FileStream(fileHandle: fileHandle))
+                    
+                    let input = PutObjectInput(body: byteStream, bucket: bucketName, key: keyDelegate(logFile))
+                    Task {
+                        let output = try await self.putObject(input: input)
+                        observer(.completed)
                     }
-                } else {
-                    observer(.error(AwsNotConfigured()))
+                } catch {
+                    observer(.error(error))
                 }
             } else {
                 observer(.completed)

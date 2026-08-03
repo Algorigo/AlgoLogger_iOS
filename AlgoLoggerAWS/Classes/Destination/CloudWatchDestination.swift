@@ -7,11 +7,12 @@
 
 import Foundation
 import XCGLogger
-import AWSLogs
+import AWSCloudWatchLogs
 import RxSwift
 import RxRelay
 import AlgoLoggerCommon
 import AlgoLogger
+import SmithyIdentity
 
 public class CloudWatchDestination: AlgorigoLoggingDestination {
     
@@ -23,7 +24,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         case putLogsError(nextSeqeunceToken: String?)
     }
     
-    fileprivate let client: AWSLogs
+    fileprivate let client: CloudWatchLogsClient
     
     fileprivate let disposeBag = DisposeBag()
     fileprivate var logUploadStream: LogUploadStream!
@@ -34,7 +35,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         logGroupNameSingle: Single<String>,
         logStreamNameSingle: Single<String>,
         credentialsProviderHolder: CredentialsProviderHolder,
-        region: AWSRegionType,
+        region: AWSRegion,
         owner: XCGLogger? = nil,
         formatter: LogFormatterProtocol? = nil,
         outputLevel: XCGLogger.Level = .info,
@@ -47,12 +48,17 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         logGroupRetentionDays: RetentionDays = RetentionDays.month_6,
         createLogGroup: Bool = true,
         createLogStream: Bool = true
-    ) {
-        let key = "CloudWatch_\(credentialsProviderHolder.credentialsProvider)_\(region)"
-        
-        let configuration = AWSServiceConfiguration(region: region, credentialsProvider: credentialsProviderHolder.credentialsProvider)!
-        AWSLogs.register(with: configuration, forKey: key)
-        self.client = AWSLogs(forKey: key)
+    ) throws {
+        let configuration: CloudWatchLogsClient.CloudWatchLogsClientConfig
+        switch credentialsProviderHolder {
+        case .accessKeyProvider(let accessKey, let secretKey):
+            let credential = AWSCredentialIdentity(accessKey: accessKey, secret: secretKey)
+            let resolver = StaticAWSCredentialIdentityResolver(credential)
+            configuration = try CloudWatchLogsClient.CloudWatchLogsClientConfig(awsCredentialIdentityResolver: resolver, region: region.rawValue)
+        case .identityPoolProvider(let resolver):
+            configuration = try CloudWatchLogsClient.CloudWatchLogsClientConfig(region: region.rawValue, authSchemeResolver: resolver)
+        }
+        client = CloudWatchLogsClient(config: configuration)
         
         super.init(owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier)
         if useQueue {
@@ -107,7 +113,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         logGroupName: String,
         logStreamName: String,
         credentialsProviderHolder: CredentialsProviderHolder,
-        region: AWSRegionType,
+        region: AWSRegion,
         owner: XCGLogger? = nil,
         formatter: LogFormatterProtocol? = nil,
         outputLevel: XCGLogger.Level = .info,
@@ -120,8 +126,8 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
         logGroupRetentionDays: RetentionDays = RetentionDays.month_6,
         createLogGroup: Bool = true,
         createLogStream: Bool = true
-    ) {
-        self.init(logGroupNameSingle: Single.just(logGroupName), logStreamNameSingle: Single.just(logStreamName), credentialsProviderHolder: credentialsProviderHolder, region: region, owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier, useQueue: useQueue, sendInterval: sendInterval, maxQueueSize: maxQueueSize, maxBatchCount: maxBatchCount, maxMessageSize: maxMessageSize, logGroupRetentionDays: logGroupRetentionDays, createLogGroup: createLogGroup, createLogStream: createLogStream)
+    ) throws {
+        try self.init(logGroupNameSingle: Single.just(logGroupName), logStreamNameSingle: Single.just(logStreamName), credentialsProviderHolder: credentialsProviderHolder, region: region, owner: owner, formatter: formatter, outputLevel: outputLevel, identifier: identifier, useQueue: useQueue, sendInterval: sendInterval, maxQueueSize: maxQueueSize, maxBatchCount: maxBatchCount, maxMessageSize: maxMessageSize, logGroupRetentionDays: logGroupRetentionDays, createLogGroup: createLogGroup, createLogStream: createLogStream)
     }
     
     private func initCloudWatch(
@@ -169,19 +175,16 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 observer(.failure(CloudWatchDestinationError.destinationReleased))
                 return Disposables.create()
             }
-            guard let request = AWSLogsDescribeLogGroupsRequest() else {
-                observer(.failure(CloudWatchDestinationError.awsNotConfigured))
-                return Disposables.create()
-            }
-            request.logGroupNamePattern = logGroupName
-            self.client.describeLogGroups(request) { response, error in
-                if let error = error {
-                    observer(.failure(error))
-                } else {
-                    let exist = response?.logGroups?.contains(where: { group in
+            let input = DescribeLogGroupsInput(logGroupNamePrefix: logGroupName)
+            Task {
+                do {
+                    let output = try await self.client.describeLogGroups(input: input)
+                    let empty = output.logGroups?.filter({ group in
                         group.logGroupName == logGroupName
-                    }) == true
-                    observer(.success(exist))
+                    }).isEmpty ?? true
+                    observer(.success(!empty))
+                } catch {
+                    observer(.failure(error))
                 }
             }
             return Disposables.create()
@@ -195,16 +198,13 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 observer(.error(CloudWatchDestinationError.destinationReleased))
                 return Disposables.create()
             }
-            guard let request = AWSLogsCreateLogGroupRequest() else {
-                observer(.error(CloudWatchDestinationError.awsNotConfigured))
-                return Disposables.create()
-            }
-            request.logGroupName = logGroupName
-            self.client.createLogGroup(request) { error in
-                if let error = error {
-                    observer(.error(error))
-                } else {
+            let input = CreateLogGroupInput(logGroupName: logGroupName)
+            Task {
+                do {
+                    _ = try await self.client.createLogGroup(input: input)
                     observer(.completed)
+                } catch {
+                    observer(.error(error))
                 }
             }
             return Disposables.create()
@@ -221,17 +221,13 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 observer(.error(CloudWatchDestinationError.destinationReleased))
                 return Disposables.create()
             }
-            guard let request = AWSLogsPutRetentionPolicyRequest() else {
-                observer(.error(CloudWatchDestinationError.awsNotConfigured))
-                return Disposables.create()
-            }
-            request.logGroupName = logGroupName
-            request.retentionInDays = NSNumber(value: retentionDays.rawValue)
-            self.client.putRetentionPolicy(request) { error in
-                if let error = error {
-                    observer(.error(error))
-                } else {
+            let input = PutRetentionPolicyInput(logGroupName: logGroupName, retentionInDays: retentionDays.rawValue)
+            Task {
+                do {
+                    _ = try await self.client.putRetentionPolicy(input: input)
                     observer(.completed)
+                } catch {
+                    observer(.error(error))
                 }
             }
             return Disposables.create()
@@ -266,20 +262,16 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 observer(.failure(CloudWatchDestinationError.destinationReleased))
                 return Disposables.create()
             }
-            guard let request = AWSLogsDescribeLogStreamsRequest() else {
-                observer(.failure(CloudWatchDestinationError.awsNotConfigured))
-                return Disposables.create()
-            }
-            request.logGroupName = logGroupName
-            request.logStreamNamePrefix = logStreamName
-            self.client.describeLogStreams(request) { response, error in
-                if let error = error {
-                    observer(.failure(error))
-                } else {
-                    let exist = response?.logStreams?.contains(where: { stream in
+            let input = DescribeLogStreamsInput(logGroupName: logGroupName, logStreamNamePrefix: logStreamName)
+            Task {
+                do {
+                    let output = try await self.client.describeLogStreams(input: input)
+                    let empty = output.logStreams?.filter({ stream in
                         stream.logStreamName == logStreamName
-                    }) == true
-                    observer(.success(exist))
+                    }).isEmpty ?? true;
+                    observer(.success(!empty))
+                } catch {
+                    observer(.failure(error))
                 }
             }
             return Disposables.create()
@@ -293,17 +285,13 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 observer(.error(CloudWatchDestinationError.destinationReleased))
                 return Disposables.create()
             }
-            guard let request = AWSLogsCreateLogStreamRequest() else {
-                observer(.error(CloudWatchDestinationError.awsNotConfigured))
-                return Disposables.create()
-            }
-            request.logGroupName = logGroupName
-            request.logStreamName = logStreamName
-            self.client.createLogStream(request) { error in
-                if let error = error {
-                    observer(.error(error))
-                } else {
+            let input = CreateLogStreamInput(logGroupName: logGroupName, logStreamName: logStreamName)
+            Task {
+                do {
+                    _ = try await self.client.createLogStream(input: input)
                     observer(.completed)
+                } catch {
+                    observer(.error(error))
                 }
             }
             return Disposables.create()
@@ -314,7 +302,7 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
     private func submitLogs(
         logGroupName: String,
         logStreamName: String,
-        logs: [AWSLogsInputLogEvent],
+        logs: [LogEvent],
         sequenceToken: String? = nil
     ) -> Single<(Bool, String?)> {
         if (logs.isEmpty) {
@@ -325,27 +313,26 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
                 observer(.failure(CloudWatchDestinationError.destinationReleased))
                 return Disposables.create()
             }
-            guard let request = AWSLogsPutLogEventsRequest() else {
-                observer(.failure(CloudWatchDestinationError.awsNotConfigured))
-                return Disposables.create()
-            }
-            request.logGroupName = logGroupName
-            request.logStreamName = logStreamName
-            request.logEvents = logs
-            request.sequenceToken = sequenceToken
-            self.client.putLogEvents(request) { [weak self] response, error in
-                if let error = error as? NSError {
-                    self?.owner?.warning("put log event error", userInfo: [_Key.errorKey: error])
-                    switch (error.code) {
-                    case AWSLogsErrorType.dataAlreadyAccepted.rawValue:
-                        observer(.success((true, response?.nextSequenceToken)))
-                    case AWSLogsErrorType.invalidSequenceToken.rawValue:
-                        observer(.failure(CloudWatchDestinationError.putLogsError(nextSeqeunceToken: response?.nextSequenceToken)))
-                    default:
-                        observer(.success((false, nil)))
-                    }
-                } else {
-                    observer(.success((true, response?.nextSequenceToken)))
+            let inputLogEvents = logs.map({ log in
+                CloudWatchLogsClientTypes.InputLogEvent(
+                    message: log.message,
+                    timestamp: log.timestamp,
+                )
+            })
+            let input = PutLogEventsInput(
+                logEvents: inputLogEvents, logGroupName: logGroupName, logStreamName: logStreamName, sequenceToken: sequenceToken
+            )
+            Task {
+                do {
+                    let output = try await self.client.putLogEvents(input: input)
+                    observer(.success((true, output.nextSequenceToken)))
+                } catch let error as DataAlreadyAcceptedException {
+                    observer(.success((true, error.properties.expectedSequenceToken)))
+                } catch let error as InvalidSequenceTokenException {
+                    observer(.failure(CloudWatchDestinationError.putLogsError(nextSeqeunceToken: error.properties.expectedSequenceToken)))
+                } catch {
+                    self.owner?.warning("put log event error", userInfo: [_Key.errorKey: error])
+                    observer(.success((false, nil)))
                 }
             }
             return Disposables.create()
@@ -370,14 +357,12 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
     fileprivate func getLogBatchUpload(logGroupName: String, logStreamName: String) -> Observable<(Bool, String?)> {
         var nextSequenceToken: String? = nil
         return logUploadStream.getOutputObservable()
-            .map({ sendIndex, logDatas -> (Int, [AWSLogsInputLogEvent]) in
-                return (sendIndex, try logDatas.map { logData in
-                    guard let event = AWSLogsInputLogEvent() else {
-                        throw CloudWatchDestinationError.awsNotConfigured
-                    }
-                    event.message = logData.message
-                    event.timestamp = (Int64(logData.timestamp.timeIntervalSince1970 * 1000)) as NSNumber
-                    return event
+            .map({ sendIndex, logDatas -> (Int, [LogEvent]) in
+                return (sendIndex, logDatas.map { logData in
+                    LogEvent(
+                        message: logData.message,
+                        timestamp: Int(logData.timestamp.timeIntervalSince1970 * 1000),
+                    )
                 })
             })
             .concatMap { [weak self] output -> Observable<(Bool, String?)> in
@@ -398,13 +383,11 @@ public class CloudWatchDestination: AlgorigoLoggingDestination {
     fileprivate func getLogUpload(logGroupName: String, logStreamName: String) -> Observable<(Bool, String?)> {
         var nextSequenceToken: String? = nil
         return logRelay
-            .map({ logData -> AWSLogsInputLogEvent in
-                guard let event = AWSLogsInputLogEvent() else {
-                    throw CloudWatchDestinationError.awsNotConfigured
-                }
-                event.message = logData.message
-                event.timestamp = (Int64(logData.timestamp.timeIntervalSince1970 * 1000)) as NSNumber
-                return event
+            .map({ logData -> LogEvent in
+                LogEvent(
+                    message: logData.message,
+                    timestamp: Int(logData.timestamp.timeIntervalSince1970 * 1000),
+                )
             })
             .concatMap { [weak self] log -> Observable<(Bool, String?)> in
                 guard let self = self else {

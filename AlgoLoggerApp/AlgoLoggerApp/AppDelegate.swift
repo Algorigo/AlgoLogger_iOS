@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static let accessKey = ""
     static let secretKey = ""
     static let identityPoolId = ""
-    static let region = AWSRegionType.APNortheast2
+    static let region = AWSRegion.apNortheast2
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -35,15 +35,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             _ = rotatingFileDestination.addTo(tag: TestTag)
         }
         
-        let cloudWatchDestination = CloudWatchDestination(
+        let cloudWatchDestination = try? CloudWatchDestination(
             logGroupName: "/test/algorigo_logger_ios_native",
             logStreamName: "device_id",
-            credentialsProviderHolder: CredentialsProviderHolder.identityPoolProvider(identityPoolId: AppDelegate.identityPoolId, region: AppDelegate.region),
+            credentialsProviderHolder: CredentialsProviderHolder.accessKeyProvider(accessKey: "", secretKey: ""),
             region: AppDelegate.region,
             outputLevel: .info,
             logGroupRetentionDays: .day_1
         )
-        _ = cloudWatchDestination.addTo(tag: TestTag)
+        _ = cloudWatchDestination?.addTo(tag: TestTag)
         return true
     }
 

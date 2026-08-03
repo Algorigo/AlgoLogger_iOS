@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AWSLogs
 import RxSwift
 import RxRelay
 import XCGLogger
